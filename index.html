@@ -7,7 +7,8 @@
     <title>Books Library</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="./index.js" defer></script>
-    <script src="./books.js" defer></script>
+    <link rel="stylesheet" href="./assets/books.css" />
+    <script src="./assets/books.js" defer></script>
   </head>
   <body>
     <div class="wrapper">
@@ -17,25 +18,80 @@
           <h2>Add new book</h2>
           <form action="#">
             <div class="inputs-container">
-              <input type="text" class="title" value="" placeholder="Title" />
-              <input type="text" class="author" value="" placeholder="Author" />
+              <input
+                type="text"
+                class="title titleOnAdding"
+                value=""
+                placeholder="Title"
+              />
+              <input
+                type="text"
+                class="author authorOnAdding"
+                value=""
+                placeholder="Author"
+              />
               <input
                 type="number"
-                class="total-pages"
+                class="total-pages total-pagesOnAdding"
                 value=""
                 placeholder="Total pages"
               />
               <div class="did-you-read">Did you read it ?</div>
               <input
                 type="number"
-                class="completed-pages"
+                class="completed-pages completed-pagesOnAdding"
                 value=""
                 placeholder="Completed pages"
               />
-              <button class="switch">Yes, I've read it.</button>
-              <button class="cancel">Cancel</button>
-              <button type="submit" class="add">
-                Add <span class="warn none">Please fill every inputs!</span>
+              <button class="switchOnAdding switch">Yes, I've read it.</button>
+              <button class="cancelOnAdding cancel">Cancel</button>
+              <button type="submit submit" class="add addOnAdding">
+                Add
+                <span class="warn warnOnAdding none"
+                  >Please fill every inputs!</span
+                >
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="edit-form-container none">
+        <div class="form-wrapper">
+          <h2>Edit book</h2>
+          <form action="#">
+            <div class="inputs-container">
+              <input
+                type="text"
+                class="title titleOnEditing"
+                value=""
+                placeholder="Title"
+              />
+              <input
+                type="text"
+                class="author authorOnEditing"
+                value=""
+                placeholder="Author"
+              />
+              <input
+                type="number"
+                class="total-pages total-pagesOnEditing"
+                value=""
+                placeholder="Total pages"
+              />
+              <div class="did-you-read">Did you read it ?</div>
+              <input
+                type="number"
+                class="completed-pages completed-pagesOnEditing"
+                value=""
+                placeholder="Completed pages"
+              />
+              <button class="switch switchOnEditing">Yes, I've read it.</button>
+              <button class="cancel cancelOnEditing">Cancel</button>
+              <button type="submit" class="add addOnEditing">
+                Add
+                <span class="warn warnOnEditing none"
+                  >Please fill every inputs!</span
+                >
               </button>
             </div>
           </form>

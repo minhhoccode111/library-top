@@ -4,14 +4,14 @@ console.log("hello world from html");
 const wrapper = document.querySelector(".wrapper");
 const plusButton = document.querySelector(".add-button");
 const formContainer = document.querySelector(".form-container");
-const haveReadButton = document.querySelector(".switch");
-const addButton = document.querySelector(".add");
-const cancelButton = document.querySelector(".cancel");
-const titleInput = document.querySelector(".title");
-const authorInput = document.querySelector(".author");
-const totalInput = document.querySelector(".total-pages");
-const completedInput = document.querySelector(".completed-pages");
-const warnText = document.querySelector(".warn");
+const haveReadButton = document.querySelector(".switchOnAdding");
+const addButton = document.querySelector(".addOnAdding");
+const cancelButton = document.querySelector(".cancelOnAdding");
+const titleInput = document.querySelector(".titleOnAdding");
+const authorInput = document.querySelector(".authorOnAdding");
+const totalInput = document.querySelector(".total-pagesOnAdding");
+const completedInput = document.querySelector(".completed-pagesOnAdding");
+const warnText = document.querySelector(".warnOnAdding");
 
 plusButton.onclick = () => formContainer.classList.remove("none");
 cancelButton.onclick = () => formContainer.classList.add("none");
@@ -67,10 +67,85 @@ function resetBookForm() {
 
 function showBooks(a, b, c, d) {
   const newBook = document.createElement("div");
-  newBook.classList.add("book-wrapper");
-  newBook.innerHTML = ``;
+  newBook.classList.add("book-container");
+  const options = document.createElement("div");
+  options.classList.add("options");
+  newBook.appendChild(options);
+  const content = document.createElement("div");
+  content.classList.add("content");
+  newBook.appendChild(content);
+  const pagesController = document.createElement("div");
+  pagesController.classList.add("pages-controller");
+  newBook.appendChild(pagesController);
+  const pagesCount = document.createElement("div");
+  pagesCount.classList.add("pages-count");
+  newBook.appendChild(pagesCount);
+  // options childs
+  const optionsEditButton = document.createElement("button");
+  optionsEditButton.classList.add("button", "green-bg", "button-edit");
+  optionsEditButton.innerHTML = "Edit";
+  options.appendChild(optionsEditButton);
+  const optionsRemoveButton = document.createElement("button");
+  optionsRemoveButton.classList.add("button", "red-bg", "button-remove");
+  optionsRemoveButton.innerHTML = "Remove";
+  options.appendChild(optionsRemoveButton);
+  // content childs
+  const contentTitle = document.createElement("h2");
+  contentTitle.classList.add("title");
+  contentTitle.innerHTML = `${a}`;
+  content.appendChild(contentTitle);
+  const contentAuthor = document.createElement("h3");
+  contentAuthor.classList.add("author");
+  contentAuthor.innerHTML = `${b}`;
+  content.appendChild(contentAuthor);
+  // pages-controller childs
+  const pagesControllerMinusButton = document.createElement("button");
+  pagesControllerMinusButton.classList.add("button", "minus-gb");
+  pagesControllerMinusButton.innerHTML = `-`;
+  pagesController.appendChild(pagesControllerMinusButton);
+  const pagesControllerCheckButton = document.createElement("button");
+  pagesControllerCheckButton.classList.add("button", "check-gb");
+  pagesControllerCheckButton.innerHTML = `✓`;
+  pagesController.appendChild(pagesControllerCheckButton);
+  const pagesControllerPlusButton = document.createElement("button");
+  pagesControllerPlusButton.classList.add("button", "plus-gb");
+  pagesControllerPlusButton.innerHTML = `+`;
+  pagesController.appendChild(pagesControllerPlusButton);
+  // pages-count childs
+  const pagesCountCompleted = document.createElement("h2");
+  pagesCountCompleted.classList.add("completed");
+  pagesCountCompleted.innerHTML = `${d}`;
+  pagesCount.appendChild(pagesCountCompleted);
+  const pagesCountSeperator = document.createElement("span");
+  pagesCountSeperator.classList.add("seperator");
+  pagesCountSeperator.innerHTML = `|`;
+  pagesCount.appendChild(pagesCountSeperator);
+  const pagesCountTotal = document.createElement("h2");
+  pagesCountTotal.classList.add("total");
+  pagesCountTotal.innerHTML = `${c}`;
+  pagesCount.appendChild(pagesCountTotal);
+  // asdasd
+  // newBook.innerHTML = `
+  // <div class="options">
+  // <button class="button green-bg button-edit">Edit</button>
+  // <button class="button red-bg button-remove">Remove</button>
+  // </div>
+  // <div class="content">
+  // <h2 class="title">${a}</h2>
+  // <h3 class="author">${b}</h3>
+  // </div>
+  // <div class="pages-controller">
+  // <button class="button minus-gb">-</button>
+  // <button class="button check-gb" style="">✓</button>
+  // <button class="button plus-gb">+</button>
+  // </div>
+  // <div class="pages-count">
+  // <h2 class="completed">${d}</h2>
+  // <span class="separator">|</span>
+  // <h2 class="total">${c}</h2>
+  // </div>
+  // `;
   wrapper.appendChild(newBook);
-  console.log(a, b, c, d);
 }
 
 function checkCompletedPages() {
