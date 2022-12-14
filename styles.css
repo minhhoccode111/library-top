@@ -10,16 +10,33 @@ html {
 }
 body {
   font-size: 2rem;
+  overflow-x: hidden;
 }
 
 .wrapper {
+  margin-top: 8rem;
+  padding: 1rem 4rem 3.2rem 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50rem, 1fr));
-  justify-content: space-between;
-  align-items: center;
-  height: 100vh;
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+  gap: 1rem;
+  /* justify-content: center;
+  align-items: center; */
+  min-height: 100vh;
   width: 100vw;
   background-color: #aaa;
+}
+.header {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8rem;
+  text-align: center;
+  background-color: rgb(21, 255, 0);
+  color: white;
+  font-size: 4rem;
+  line-height: 8rem;
 }
 .add-button {
   padding: 0rem;
@@ -51,6 +68,8 @@ body {
   padding: 1rem;
   margin: 1rem;
   border-radius: 2rem;
+  width: 100%;
+  max-width: 36rem;
 }
 .form-wrapper h2 {
   color: white;
@@ -74,7 +93,7 @@ body {
   left: 0;
   z-index: 99;
 }
-.form-container.none {
+.none {
   display: none !important;
 }
 .form-container * {
@@ -109,6 +128,7 @@ input[type="number"] {
 }
 .did-you-read {
   text-align: center;
+  font-size: 1.6rem;
 }
 .switch {
   grid-row: 4/5;
@@ -118,7 +138,34 @@ input[type="number"] {
 }
 .add {
   background-color: green;
+  position: relative;
+}
+.warn {
+  color: red;
+  font-size: 1rem;
+  position: absolute;
+  z-index: 100;
+  bottom: -1.6rem;
+  left: 4rem;
 }
 .cancel {
   background-color: red;
+}
+
+/* ###################################################################### */
+/* css for new books we just created */
+.book-wrapper {
+  background-color: rgb(147, 120, 223);
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 2.8rem;
+  width: 100%;
+  max-width: 40rem;
+  height: 30rem;
+  /* height: 100%; */
+  /* max-height: 36rem; */
+}
+.book-wrapper * {
+  font-size: 1.6rem;
+  color: white;
 }

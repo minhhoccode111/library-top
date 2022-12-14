@@ -7,33 +7,22 @@
     <title>Books Library</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="./index.js" defer></script>
+    <script src="./books.js" defer></script>
   </head>
   <body>
     <div class="wrapper">
+      <header class="header">BOOKS LIBRARY</header>
       <div class="form-container none">
         <div class="form-wrapper">
           <h2>Add new book</h2>
           <form action="#">
             <div class="inputs-container">
-              <input
-                type="text"
-                class="title"
-                value=""
-                placeholder="Title"
-                required
-              />
-              <input
-                type="text"
-                class="author"
-                value=""
-                placeholder="Author"
-                required
-              />
+              <input type="text" class="title" value="" placeholder="Title" />
+              <input type="text" class="author" value="" placeholder="Author" />
               <input
                 type="number"
                 class="total-pages"
                 value=""
-                required
                 placeholder="Total pages"
               />
               <div class="did-you-read">Did you read it ?</div>
@@ -41,12 +30,13 @@
                 type="number"
                 class="completed-pages"
                 value=""
-                required
                 placeholder="Completed pages"
               />
               <button class="switch">Yes, I've read it.</button>
               <button class="cancel">Cancel</button>
-              <button type="submit" class="add">Add</button>
+              <button type="submit" class="add">
+                Add <span class="warn none">Please fill every inputs!</span>
+              </button>
             </div>
           </form>
         </div>
