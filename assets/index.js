@@ -1,5 +1,4 @@
 "use strict";
-console.log("hello world from html");
 
 const wrapper = document.querySelector(".wrapper");
 const plusButton = document.querySelector(".add-button");
@@ -22,6 +21,7 @@ addButton.onclick = handleAddButton;
 
 let myLibrary = [];
 let book;
+let index = 0;
 
 function handleAddButton(e) {
   if (

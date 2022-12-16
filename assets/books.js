@@ -1,5 +1,4 @@
 "use strict";
-console.log("hello world from books.js");
 
 const formContainerEdit = document.querySelector(".edit-form-container");
 const haveReadButtonEdit = document.querySelector(".switchOnEditing");
@@ -19,7 +18,9 @@ cancelButtonEdit.onclick = () => formContainerEdit.classList.add("none");
 
 function showBooks(a, b, c, d) {
   const newBook = document.createElement("div");
-  newBook.classList.add("book-container");
+  newBook.setAttribute("class", "book-container");
+  newBook.setAttribute("data-index", `${index}`);
+  index++;
   // const options = document.createElement("div");
   // options.classList.add("options");
   // newBook.appendChild(options);
@@ -99,8 +100,14 @@ function showBooks(a, b, c, d) {
   </div>
   `;
   wrapper.appendChild(newBook);
-  const buttonEdit = document.querySelector(".button-edit");
-  buttonEdit.onclick = () => formContainerEdit.classList.remove("none");
+  const buttonsEdit = document.querySelectorAll(".button-edit");
+  buttonsEdit.forEach((button) =>
+    button.addEventListener("click", (e) => {
+      // formContainerEdit.classList.remove('none')
+      console.log(e.target.dataset.index);
+    })
+  );
+  // buttonEdit.onclick = () => formContainerEdit.classList.remove("none");
   const buttonRemove = document.querySelector(".button-remove");
   buttonRemove.onclick = (e) => console.log(e.target);
 }
