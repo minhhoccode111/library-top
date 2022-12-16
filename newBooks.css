@@ -1,0 +1,93 @@
+.library {
+  margin-top: 8rem;
+  padding: 1rem 2.4rem 3.2rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+  gap: 1rem;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #aaa;
+  justify-items: center;
+}
+.book-container {
+  background-color: rgb(240, 151, 151);
+  min-width: 100%;
+  height: 100%;
+  max-height: 26rem;
+  padding: 0.4rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 4rem 1fr 4rem 4rem 4rem;
+  border-radius: 1rem;
+  text-align: center;
+  color: #333;
+}
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 1rem;
+  color: white;
+  transition: all 0.12s;
+  font-weight: bolder;
+  font-size: 1.6rem;
+}
+.btn:active {
+  border: 1px solid green;
+}
+.book-button-edit,
+.btn.minus,
+.book-completed {
+  grid-column: 1/2;
+}
+.book-button-remove,
+.btn.plus,
+.book-total {
+  grid-column: 3/4;
+}
+.btn.check,
+.seperator {
+  grid-column: 2/3;
+}
+.book-title,
+.book-author {
+  grid-column: 1/4;
+}
+.book-title,
+.book-author,
+.seperator {
+  justify-self: center;
+  align-self: center;
+}
+.btn.book-button-edit {
+  background-color: green;
+}
+.btn.book-button-remove {
+  background-color: red;
+}
+.book-title {
+}
+.book-author {
+}
+.btn.minus {
+  background-color: red;
+  border-radius: 1rem 0 0 1rem;
+  border-right: 2px solid rgb(255, 255, 255);
+}
+.btn.check {
+  background-color: blue;
+  border-radius: 0 0 0 0;
+  border-left: 2px solid rgb(255, 255, 255);
+  border-right: 2px solid rgb(255, 255, 255);
+}
+.btn.plus {
+  background-color: green;
+  border-radius: 0 1rem 1rem 0;
+  border-left: 2px solid rgb(255, 255, 255);
+}
+.book-completed {
+}
+.seperator {
+}
+.book-total {
+}

@@ -14,17 +14,8 @@ body {
 }
 
 .wrapper {
-  margin-top: 8rem;
-  padding: 1rem 4rem 3.2rem 1rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
-  gap: 1rem;
-  /* justify-content: center;
-  align-items: center; */
-  min-height: 100vh;
-  width: 100vw;
-  background-color: #aaa;
 }
+
 .header {
   position: fixed;
   z-index: 100;
@@ -54,9 +45,6 @@ body {
   z-index: 100;
   bottom: 1rem;
   right: 1rem;
-}
-.plus-button:hover {
-  opacity: 0.5;
 }
 .plus-button:active {
   background-color: red;
