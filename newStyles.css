@@ -1,0 +1,161 @@
+*,
+::after,
+::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font: normal normal normal 10px/1.5 Arial, sans-serif;
+}
+body {
+  font-size: 2rem;
+  overflow-x: hidden;
+}
+
+.wrapper {
+  margin-top: 8rem;
+  padding: 1rem 4rem 3.2rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+  gap: 1rem;
+  /* justify-content: center;
+  align-items: center; */
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #aaa;
+}
+.header {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8rem;
+  text-align: center;
+  background-color: rgb(21, 255, 0);
+  color: white;
+  font-size: 4rem;
+  line-height: 8rem;
+}
+.plus-button {
+  padding: 0rem;
+  height: 6rem;
+  width: 6rem;
+  border-radius: 50%;
+  border: 1px solid gray;
+  background-color: palegoldenrod;
+  color: red;
+  font-weight: bolder;
+  font-size: 4rem;
+  cursor: pointer;
+
+  position: fixed;
+  z-index: 100;
+  bottom: 1rem;
+  right: 1rem;
+}
+.plus-button:hover {
+  opacity: 0.5;
+}
+.plus-button:active {
+  background-color: red;
+  color: palegoldenrod;
+  opacity: 1;
+}
+.none {
+  display: none !important;
+}
+.form-container {
+  padding: 1rem;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: rgba(0, 0, 0, 0.938);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+.form-container * {
+  color: rgb(255, 255, 255);
+  font-weight: bolder;
+}
+.form-wrapper {
+  background-color: rgb(68, 0, 255);
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 2rem;
+  width: 100%;
+  max-width: 36rem;
+}
+.form-wrapper h2 {
+  color: white;
+  font-size: 4rem;
+  border-bottom: 1px solid white;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.form-wrapper form {
+  width: 100%;
+}
+.inputs-container {
+  width: 100%;
+  display: grid;
+  /* grid-template-columns: 16rem 16rem; */
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, 4rem);
+  align-items: center;
+  gap: 1rem;
+}
+input {
+  padding: 1rem;
+  border-radius: 1rem;
+  border: none;
+}
+input:focus {
+  outline: 1px solid green;
+}
+input[type="text"] {
+  grid-column: 1/3;
+  background-color: rgb(31, 29, 29);
+}
+input[type="number"] {
+  background-color: rgb(31, 29, 29);
+  width: 100%;
+  /*don't know why if we are not setting width to 100% then it will grow and pass 1fr even if we set container's grid-template-columns to :1fr 1fr; */
+}
+.inputs-container button {
+  padding: 1rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+.did-you-read {
+  text-align: center;
+  font-size: 1.6rem;
+}
+.switch {
+  background-color: green;
+}
+.add {
+  background-color: green;
+  position: relative;
+}
+.warn {
+  color: rgb(255, 230, 1);
+  font-size: 1.2rem;
+  position: absolute;
+  z-index: 200;
+  top: -1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.cancel {
+  background-color: red;
+}

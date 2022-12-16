@@ -5,10 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Books Library</title>
-    <!-- <link rel="stylesheet" href="./assets/styles.css" />
-    <script src="./assets/index.js" defer></script>
-    <link rel="stylesheet" href="./assets/books.css" />
-    <script src="./assets/books.js" defer></script> -->
+    <!-- <link rel="stylesheet" href="./assets/styles.css" /> -->
+    <!-- <script src="./assets/index.js" defer></script> -->
+    <!-- <link rel="stylesheet" href="./assets/books.css" /> -->
+    <!-- <script src="./assets/books.js" defer></script> -->
+    <link rel="stylesheet" href="./newBooks.css" />
+    <link rel="stylesheet" href="./newStyles.css" />
+    <script src="./newLibrary.js" defer></script>
+    <script src="./newBook.js" defer></script>
   </head>
   <body>
     <div class="wrapper">
@@ -18,44 +22,32 @@
           <h2>Add new book</h2>
           <form action="#">
             <div class="inputs-container">
-              <input
-                type="text"
-                class="title titleOnAdding"
-                value=""
-                placeholder="Title"
-              />
-              <input
-                type="text"
-                class="author authorOnAdding"
-                value=""
-                placeholder="Author"
-              />
+              <input type="text" class="title" value="" placeholder="Title" />
+              <input type="text" class="author" value="" placeholder="Author" />
               <input
                 type="number"
-                class="total-pages total-pagesOnAdding"
+                class="total-pages"
                 value=""
                 placeholder="Total pages"
               />
               <div class="did-you-read">Did you read it ?</div>
               <input
                 type="number"
-                class="completed-pages completed-pagesOnAdding"
+                class="completed-pages"
                 value=""
                 placeholder="Completed pages"
               />
-              <button class="switchOnAdding switch">Yes, I've read it.</button>
-              <button class="cancelOnAdding cancel">Cancel</button>
-              <button type="submit submit" class="add addOnAdding">
+              <button class="switch">Yes, I've read it.</button>
+              <button class="cancel">Cancel</button>
+              <button type="submit submit" class="add">
                 Add
-                <span class="warn warnOnAdding none"
-                  >Please fill every inputs!</span
-                >
+                <span class="warn none">Please fill every inputs!</span>
               </button>
             </div>
           </form>
         </div>
       </div>
-      <div class="edit-form-container none">
+      <!-- <div class="edit-form-container none">
         <div class="form-wrapper">
           <h2>Edit book</h2>
           <form action="#">
@@ -96,8 +88,8 @@
             </div>
           </form>
         </div>
-      </div>
-      <button class="add-button">+</button>
+      </div> -->
+      <button class="plus-button">+</button>
     </div>
   </body>
 </html>
