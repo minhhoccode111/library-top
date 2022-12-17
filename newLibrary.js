@@ -39,7 +39,7 @@ function handleAddBtn(e) {
     return warnText.classList.remove("none"); // show warn text and return
   warnText.classList.add("none"); //remove warn text
   formCtn.classList.add("none");
-  addBookToLibrary(
+  pushBookToLibrary(
     titleInput.value,
     authorInput.value,
     totalInput.value,
@@ -48,21 +48,27 @@ function handleAddBtn(e) {
   resetForm(); //reset form
   library.innerHTML = ""; //reset or refresh or reload the page
   showBooks(myLibrary); //add index and display() method to every element in array
-  for (let i = 0; i < myLibrary.length; i++) {
-    myLibrary[i].display();
-  }
-  //and we have to redefined buttons every single time we have change in the DOM
-  const buttons = document.querySelectorAll("button");
-  const removeBtns = document.querySelectorAll(".book-button-remove");
-  buttons.forEach((button) => allEventListener(button)); //fancy backgroundColor random on buttons
 }
 //FIXME FIXME FIXME FIXME
-function allEventListener(button) {
-  button.addEventListener("mousedown", buttonHandleMouseEnter);
-  button.addEventListener("mouseup", buttonHandleMouseEnter);
+function allButtonsListener(button) {
   button.addEventListener("mouseenter", buttonHandleMouseEnter);
   button.addEventListener("mouseout", buttonHandleMouseOut);
+  button.addEventListener("mousedown", buttonHandleMouseEnter);
+  button.addEventListener("mouseup", buttonHandleMouseEnter);
 } //FIXME I just move addListener to outside and link them together
+
+function removeButtonsListener(removeBtn) {
+  removeBtn.addEventListener("click", (e) => {
+    console.log(e.target.getAttribute("data-index"));
+    // const theBookThatWeClickRemoveBtn = document.querySelector(
+    //   `[data-index="${e.target.getAttribute("data-index")}"]`
+    // );
+    myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1);
+    library.innerHTML = ""; //reset or refresh or reload the page
+    showBooks(myLibrary);
+  });
+}
+
 function resetForm() {
   [
     titleInput.value,
@@ -81,7 +87,7 @@ function Book(title, author, total, completed) {
   //the constructor
 }
 
-function addBookToLibrary(title, author, total, completed) {
+function pushBookToLibrary(title, author, total, completed) {
   myLibrary.push(new Book(title, author, total, completed));
 }
 
@@ -89,7 +95,7 @@ function showBooks(arr) {
   //add display() method and index property to every book object in library array
   let i = 0; //it doesn't show any thing, just add
   arr.map((a) => {
-    a.index = ++i;
+    a.index = i++;
     a.display = function () {
       const newBook = document.createElement("div");
       newBook.classList.add("book-container");
@@ -109,6 +115,14 @@ function showBooks(arr) {
       library.appendChild(newBook);
     };
   });
+  for (let i = 0; i < myLibrary.length; i++) {
+    myLibrary[i].display();
+  }
+  //and we have to redefined buttons every single time we have change in the DOM
+  const buttons = document.querySelectorAll("button");
+  const removeBtns = document.querySelectorAll(".book-button-remove");
+  buttons.forEach((button) => allButtonsListener(button)); //fancy backgroundColor random on buttons
+  removeBtns.forEach((removeBtn) => removeButtonsListener(removeBtn));
 }
 showBooks(myLibrary);
 

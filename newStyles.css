@@ -11,6 +11,8 @@ html {
 body {
   font-size: 2rem;
   overflow-x: hidden;
+  background-color: #aaa;
+  min-height: 100vh;
 }
 
 .wrapper {
