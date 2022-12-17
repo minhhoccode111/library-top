@@ -23,8 +23,15 @@ formCtn.onclick = () => formCtn.classList.add("none"); // return when we clicked
 formWrapper.onclick = (e) => e.stopPropagation(); //stopPropagation so that the formCtn don't receive click event when we click formwrapper (formWrapper is placing inside formCtn)
 haveReadBtn.onclick = () => (completedInput.value = totalInput.value);
 completedInput.addEventListener("input", checkCompletedPages);
+totalInput.addEventListener("input", () => {
+  if (totalInput.value > 99999) {
+    totalInput.value = 100000;
+    return;
+  }
+});
 addBtn.onclick = handleAddBtn;
 
+let currentIndex;
 let myLibrary = [
   {
     title: "How to think like a Programmer.",
@@ -134,12 +141,14 @@ function showBooks(arr) {
 
 function defineElementsInBooks() {
   const buttons = document.querySelectorAll("button");
+  const editBtns = document.querySelectorAll(".book-button-edit");
   const removeBtns = document.querySelectorAll(".book-button-remove");
   const plusBtns = document.querySelectorAll(".btn.plus");
   const minusBtns = document.querySelectorAll(".btn.minus");
   const checkBtns = document.querySelectorAll(".btn.check");
 
   buttons.forEach((button) => allButtonsListener(button)); //fancy backgroundColor random on buttons
+  editBtns.forEach((editBtn) => editButtonsListener(editBtn));
   removeBtns.forEach((removeBtn) => removeButtonsListener(removeBtn));
   plusBtns.forEach((plusBtn) => plusAndMinusListener(plusBtn));
   minusBtns.forEach((minusBtn) => plusAndMinusListener(minusBtn));
@@ -151,7 +160,20 @@ function allButtonsListener(button) {
   button.addEventListener("mouseout", buttonHandleMouseOut);
   button.addEventListener("mousedown", buttonHandleMouseEnter);
   button.addEventListener("mouseup", buttonHandleMouseEnter);
-} //FIXME I just move addListener to outside and link them together
+} // I just move addListener to outside and link them together
+
+const editPopup = document.querySelector(".edit-popup");
+const editPopupCtn = document.querySelector(".edit-popup-container");
+
+editPopup.onclick = (e) => e.stopPropagation();
+editPopupCtn.onclick = () => editPopupCtn.classList.add("none");
+function editButtonsListener(editBtn) {
+  editBtn.addEventListener("click", (e) => {
+    console.log(e.currentTarget.getAttribute("data-index"));
+    console.log(e.currentTarget.parentNode);
+    editPopupCtn.classList.remove("none");
+  });
+}
 
 function removeButtonsListener(removeBtn) {
   removeBtn.addEventListener("click", (e) => {
@@ -248,7 +270,8 @@ function buttonHandleMouseOut(e) {
     e.target.classList.contains("book-button-edit") ||
     e.target.classList.contains("plus") ||
     e.target.classList.contains("add") ||
-    e.target.classList.contains("switch")
+    e.target.classList.contains("switch") ||
+    e.target.classList.contains("new-confirm")
   ) {
     e.target.style.backgroundColor = "green";
     return;
@@ -270,6 +293,6 @@ function startedForm() {
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["default", "default", "1234567890", "1"];
+  ] = ["default", "default", "123", "1"];
 }
 startedForm();

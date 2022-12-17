@@ -102,19 +102,19 @@ body {
   align-items: center;
   gap: 1rem;
 }
-input {
+.form-container input {
   padding: 1rem;
   border-radius: 1rem;
   border: none;
 }
-input:focus {
+.form-container input:focus {
   outline: 1px solid green;
 }
-input[type="text"] {
+.form-container input[type="text"] {
   grid-column: 1/3;
   background-color: rgb(31, 29, 29);
 }
-input[type="number"] {
+.form-container input[type="number"] {
   background-color: rgb(31, 29, 29);
   width: 100%;
   /*don't know why if we are not setting width to 100% then it will grow and pass 1fr even if we set container's grid-template-columns to :1fr 1fr; */
