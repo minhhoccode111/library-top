@@ -1,4 +1,4 @@
-"use strict";
+("use strict");
 
 const wrapper = document.querySelector(".wrapper");
 const library = document.querySelector(".library");
@@ -15,18 +15,48 @@ const haveReadBtn = document.querySelector(".switch");
 const warnText = document.querySelector(".warn");
 
 plusBtn.onclick = () => formCtn.classList.remove("none");
-cancelBtn.onclick = () => formCtn.classList.add("none");
+cancelBtn.onclick = () => {
+  formCtn.classList.add("none");
+  resetForm();
+};
 formCtn.onclick = () => formCtn.classList.add("none"); // return when we clicked outside the popup form
-formWrapper.onclick = (e) => e.stopPropagation(); //stopPropagation so that the formCtn don't receive click event when we click formwrapper
+formWrapper.onclick = (e) => e.stopPropagation(); //stopPropagation so that the formCtn don't receive click event when we click formwrapper (formWrapper is placing inside formCtn)
 haveReadBtn.onclick = () => (completedInput.value = totalInput.value);
 completedInput.addEventListener("input", checkCompletedPages);
 addBtn.onclick = handleAddBtn;
+addBtn.onkeypress = handleAddBtn; //handle enter key press to fire addBtn function
 
 let myLibrary = [
-  { title: "Ngu", author: "Non", total: 400, completed: 300 },
-  { title: "Oc cho", author: "Ga", total: 500, completed: 400 },
-  { title: "Thieu nang", author: "Kem", total: 600, completed: 500 },
-  { title: "Suc vat", author: "Bai nao", total: 700, completed: 600 },
+  {
+    title: "How to think like a Programmer.",
+    author: "Non",
+    total: 260,
+    completed: 10,
+  },
+  {
+    title: "HeadFirst JavaScript.",
+    author: "Eric Freeman & Elisabeth Robson",
+    total: 728,
+    completed: 316,
+  },
+  {
+    title: "The principles of Object-Oriented in Java Script.",
+    author: "Nicholas C.Zakas",
+    total: 122,
+    completed: 19,
+  },
+  {
+    title: "HeadFirst Design Patterns.",
+    author: "Eric Freeman & Elisabeth Robson",
+    total: 867,
+    completed: 1,
+  },
+  {
+    title: "Cracking the CODING INTERVIEW.",
+    author: "Gatle Laakmann McDowell",
+    total: 712,
+    completed: 1,
+  },
 ];
 function handleAddBtn(e) {
   e.preventDefault();
@@ -49,7 +79,6 @@ function handleAddBtn(e) {
   library.innerHTML = ""; //reset or refresh or reload the page
   showBooks(myLibrary); //add index and display() method to every element in array
 }
-//FIXME FIXME FIXME FIXME
 
 function resetForm() {
   [
@@ -100,17 +129,22 @@ function showBooks(arr) {
   for (let i = 0; i < myLibrary.length; i++) {
     myLibrary[i].display();
   }
-  //and we have to redefined buttons every single time we have change in the array
-  redefinedAllButtons();
+  //and we have to define elements every single time we have change in the array
+  defineElementsInBooks();
 }
 
-function redefinedAllButtons() {
+function defineElementsInBooks() {
   const buttons = document.querySelectorAll("button");
   const removeBtns = document.querySelectorAll(".book-button-remove");
-  const plusBtn = document.querySelectorAll(".btn.plus");
+  const plusBtns = document.querySelectorAll(".btn.plus");
+  const minusBtns = document.querySelectorAll(".btn.minus");
+  const checkBtns = document.querySelectorAll(".btn.check");
 
   buttons.forEach((button) => allButtonsListener(button)); //fancy backgroundColor random on buttons
   removeBtns.forEach((removeBtn) => removeButtonsListener(removeBtn));
+  plusBtns.forEach((plusBtn) => plusAndMinusListener(plusBtn));
+  minusBtns.forEach((minusBtn) => plusAndMinusListener(minusBtn));
+  checkBtns.forEach((checkBtn) => plusAndMinusListener(checkBtn));
 }
 
 function allButtonsListener(button) {
@@ -126,6 +160,38 @@ function removeButtonsListener(removeBtn) {
     library.innerHTML = ""; //reset or refresh or reload the page
     showBooks(myLibrary);
   });
+}
+
+function plusAndMinusListener(a) {
+  if (a.classList.contains("plus")) {
+    a.addEventListener("click", (e) => {
+      let completedPages = e.currentTarget.parentNode.childNodes[15];
+      //select the completed-pages that is the 16th in the childNodes of the parent of the button we've click :)
+      let totalPages = e.currentTarget.parentNode.childNodes[19];
+      if (completedPages.textContent === totalPages.textContent) return;
+      completedPages.textContent++; //then increase it
+      return;
+    });
+  }
+  if (a.classList.contains("minus")) {
+    a.addEventListener("click", (e) => {
+      let completedPages = e.currentTarget.parentNode.childNodes[15];
+      //select the completed-pages that is the 16th in the childNodes of the parent of the button we've click :)
+      if (completedPages.textContent == 0) return;
+      completedPages.textContent--; //then decrease it
+      return;
+    });
+  }
+  if (a.classList.contains("check")) {
+    a.addEventListener("click", (e) => {
+      let completedPages = e.currentTarget.parentNode.childNodes[15];
+      //select the completed-pages that is the 16th in the childNodes of the parent of the button we've click :)
+      let totalPages = e.currentTarget.parentNode.childNodes[19];
+      //select the completed-pages that is the 20th in the childNodes of the parent of the button we've click :)
+      completedPages.textContent = totalPages.textContent; //then make it equal to check as finish
+      return;
+    });
+  }
 }
 
 showBooks(myLibrary);
