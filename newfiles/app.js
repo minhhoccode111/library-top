@@ -31,7 +31,7 @@ totalInput.addEventListener("input", () => {
 });
 addBtn.onclick = handleAddBtn;
 
-let currentIndex;
+let currentIndex = undefined;
 let myLibrary = [
   {
     title: "How to think like a Programmer.",
@@ -92,7 +92,7 @@ function resetForm() {
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["default", "default", "123456", "1"];
+  ] = ["", "", "", ""];
 } //remember to fix some default info of form
 
 function Book(title, author, total, completed) {
@@ -162,16 +162,46 @@ function allButtonsListener(button) {
   button.addEventListener("mouseup", buttonHandleMouseEnter);
 } // I just move addListener to outside and link them together
 
-const editPopup = document.querySelector(".edit-popup");
-const editPopupCtn = document.querySelector(".edit-popup-container");
-
-editPopup.onclick = (e) => e.stopPropagation();
-editPopupCtn.onclick = () => editPopupCtn.classList.add("none");
 function editButtonsListener(editBtn) {
   editBtn.addEventListener("click", (e) => {
-    console.log(e.currentTarget.getAttribute("data-index"));
-    console.log(e.currentTarget.parentNode);
-    editPopupCtn.classList.remove("none");
+    currentIndex = e.currentTarget.getAttribute("data-index"); //set index to know specific element we are currently working on
+    const editPopup = document.querySelector(".edit-popup");
+    const editPopupCtn = document.querySelector(".edit-popup-container");
+    const confirmBtn = document.querySelector(".new-confirm");
+    editPopupCtn.classList.remove("none"); //show popup when edit buttons are clicked
+    const popupTitleInputs = document.querySelector(".new-title");
+    const popupAuthorInputs = document.querySelector(".new-author");
+    const popupCompletedInputs = document.querySelector(".new-completed-pages");
+
+    editPopup.onclick = (e) => e.stopPropagation();
+    editPopupCtn.onclick = () => {
+      editPopupCtn.classList.add("none");
+      [
+        popupTitleInputs.value,
+        popupAuthorInputs.value,
+        popupCompletedInputs.value,
+      ] = ["", "", ""];
+    }; // click outside the editPopup (is editPopupCtn) will hide all popup things and reset the popup form for next use.
+    confirmBtn.onclick = (e) => {
+      if (popupTitleInputs.value != "") {
+        myLibrary[currentIndex].title = popupTitleInputs.value;
+      }
+      if (popupAuthorInputs.value != "") {
+        myLibrary[currentIndex].author = popupAuthorInputs.value;
+      }
+      if (popupCompletedInputs.value != "" && popupCompletedInputs.value >= 0) {
+        if (popupCompletedInputs.value > myLibrary[currentIndex].total) {
+          popupCompletedInputs.value = myLibrary[currentIndex].total;
+          myLibrary[currentIndex].completed = popupCompletedInputs.value;
+        } else {
+          myLibrary[currentIndex].completed = popupCompletedInputs.value;
+        }
+      }
+      editPopupCtn.onclick(); // we call onclick event on editPopupCtn just to reset popup form and hide it
+      currentIndex = undefined; //reset current index
+      library.innerHTML = ""; //reset or refresh or reload the page
+      showBooks(myLibrary); //then show books again
+    };
   });
 }
 
@@ -287,12 +317,12 @@ function buttonHandleMouseOut(e) {
 } //set its background color back to normal when mouse out
 
 //delete startedForm() after finish program
-function startedForm() {
-  [
-    titleInput.value,
-    authorInput.value,
-    totalInput.value,
-    completedInput.value,
-  ] = ["default", "default", "123", "1"];
-}
-startedForm();
+// function startedForm() {
+//   [
+//     titleInput.value,
+//     authorInput.value,
+//     totalInput.value,
+//     completedInput.value,
+//   ] = ["default", "default", "123", "1"];
+// }
+// startedForm();

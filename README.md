@@ -11,3 +11,5 @@ What I've learn :
   console.log(e.currentTarget.parentNode)
   //show its parent
   })
+
+- we can call onclick like a function to trigger a specific element event

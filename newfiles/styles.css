@@ -37,7 +37,8 @@ body {
   width: 6rem;
   border-radius: 50%;
   border: 1px solid gray;
-  background-color: palegoldenrod;
+  background-color: rgb(238, 232, 170);
+  opacity: 0.8;
   color: red;
   font-weight: bolder;
   font-size: 4rem;
