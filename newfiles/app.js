@@ -24,7 +24,6 @@ formWrapper.onclick = (e) => e.stopPropagation(); //stopPropagation so that the 
 haveReadBtn.onclick = () => (completedInput.value = totalInput.value);
 completedInput.addEventListener("input", checkCompletedPages);
 addBtn.onclick = handleAddBtn;
-addBtn.onkeypress = handleAddBtn; //handle enter key press to fire addBtn function
 
 let myLibrary = [
   {
@@ -86,8 +85,8 @@ function resetForm() {
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["a", "b", "11", "2"];
-}
+  ] = ["default", "default", "123456", "1"];
+} //remember to fix some default info of form
 
 function Book(title, author, total, completed) {
   this.title = title;
@@ -271,6 +270,6 @@ function startedForm() {
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["abc", "xyz", "123123", "12312"];
+  ] = ["default", "default", "1234567890", "1"];
 }
 startedForm();
