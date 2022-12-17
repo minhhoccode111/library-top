@@ -50,24 +50,6 @@ function handleAddBtn(e) {
   showBooks(myLibrary); //add index and display() method to every element in array
 }
 //FIXME FIXME FIXME FIXME
-function allButtonsListener(button) {
-  button.addEventListener("mouseenter", buttonHandleMouseEnter);
-  button.addEventListener("mouseout", buttonHandleMouseOut);
-  button.addEventListener("mousedown", buttonHandleMouseEnter);
-  button.addEventListener("mouseup", buttonHandleMouseEnter);
-} //FIXME I just move addListener to outside and link them together
-
-function removeButtonsListener(removeBtn) {
-  removeBtn.addEventListener("click", (e) => {
-    console.log(e.target.getAttribute("data-index"));
-    // const theBookThatWeClickRemoveBtn = document.querySelector(
-    //   `[data-index="${e.target.getAttribute("data-index")}"]`
-    // );
-    myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1);
-    library.innerHTML = ""; //reset or refresh or reload the page
-    showBooks(myLibrary);
-  });
-}
 
 function resetForm() {
   [
@@ -118,12 +100,34 @@ function showBooks(arr) {
   for (let i = 0; i < myLibrary.length; i++) {
     myLibrary[i].display();
   }
-  //and we have to redefined buttons every single time we have change in the DOM
+  //and we have to redefined buttons every single time we have change in the array
+  redefinedAllButtons();
+}
+
+function redefinedAllButtons() {
   const buttons = document.querySelectorAll("button");
   const removeBtns = document.querySelectorAll(".book-button-remove");
+  const plusBtn = document.querySelectorAll(".btn.plus");
+
   buttons.forEach((button) => allButtonsListener(button)); //fancy backgroundColor random on buttons
   removeBtns.forEach((removeBtn) => removeButtonsListener(removeBtn));
 }
+
+function allButtonsListener(button) {
+  button.addEventListener("mouseenter", buttonHandleMouseEnter);
+  button.addEventListener("mouseout", buttonHandleMouseOut);
+  button.addEventListener("mousedown", buttonHandleMouseEnter);
+  button.addEventListener("mouseup", buttonHandleMouseEnter);
+} //FIXME I just move addListener to outside and link them together
+
+function removeButtonsListener(removeBtn) {
+  removeBtn.addEventListener("click", (e) => {
+    myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1);
+    library.innerHTML = ""; //reset or refresh or reload the page
+    showBooks(myLibrary);
+  });
+}
+
 showBooks(myLibrary);
 
 function checkCompletedPages() {
