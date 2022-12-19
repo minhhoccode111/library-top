@@ -21,7 +21,10 @@ cancelBtn.onclick = () => {
 };
 formCtn.onclick = () => formCtn.classList.add("none"); // return when we clicked outside the popup form
 formWrapper.onclick = (e) => e.stopPropagation(); //stopPropagation so that the formCtn don't receive click event when we click formwrapper (formWrapper is placing inside formCtn)
-haveReadBtn.onclick = () => (completedInput.value = totalInput.value);
+haveReadBtn.onclick = (e) => {
+  completedInput.value = totalInput.value;
+  e.stopPropagation();
+};
 completedInput.addEventListener("input", checkCompletedPages);
 totalInput.addEventListener("input", () => {
   if (totalInput.value > 99999) {
@@ -189,13 +192,12 @@ function editButtonsListener(editBtn) {
       if (popupAuthorInputs.value != "") {
         myLibrary[currentIndex].author = popupAuthorInputs.value;
       }
-      if (popupCompletedInputs.value != "" && popupCompletedInputs.value >= 0) {
-        if (popupCompletedInputs.value > myLibrary[currentIndex].total) {
-          popupCompletedInputs.value = myLibrary[currentIndex].total;
-          myLibrary[currentIndex].completed = popupCompletedInputs.value;
-        } else {
-          myLibrary[currentIndex].completed = popupCompletedInputs.value;
-        }
+      if (
+        popupCompletedInputs.value >= 0 &&
+        popupCompletedInputs.value <= myLibrary[currentIndex].total &&
+        Number.isInteger(Number(popupCompletedInputs.value))
+      ) {
+        myLibrary[currentIndex].completed = popupCompletedInputs.value;
       }
       editPopupCtn.onclick(); // we call onclick event on editPopupCtn just to reset popup form and hide it
       currentIndex = undefined; //reset current index
