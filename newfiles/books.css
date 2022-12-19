@@ -3,7 +3,7 @@
   padding: 1rem 2.4rem 3.2rem 1rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
-  /* grid-template-rows: repeat(3, 1fr); */
+  grid-template-rows: repeat(3, 1fr);
   gap: 1rem;
   min-width: 100vw;
   background-color: #aaa;
@@ -11,21 +11,20 @@
 }
 .book-container {
   background-color: rgb(240, 151, 151);
-  padding: 0.4rem;
+  padding: 2rem 4rem 7.2rem;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 4rem 1fr 4rem 4rem 4rem;
   border-radius: 1rem;
   text-align: center;
   color: #333;
   align-self: stretch;
   justify-self: stretch;
+  position: relative;
+  /* max-width: 100%; */
 }
 .btn {
   border: none;
   cursor: pointer;
-  border-radius: 1rem;
+  border-radius: 0.4rem;
   color: white;
   transition: all 0.12s;
   font-weight: bolder;
@@ -34,63 +33,57 @@
 .btn:active {
   border: 1px solid green;
 }
-.book-button-edit,
-.btn.minus,
-.book-completed {
-  grid-column: 1/2;
-}
-.book-button-remove,
-.btn.plus,
-.book-total {
-  grid-column: 3/4;
-}
-.btn.check,
-.seperator {
-  grid-column: 2/3;
-}
-.book-title,
-.book-author {
-  grid-column: 1/4;
-}
-.book-title,
-.book-author,
-.seperator {
-  justify-self: center;
-  align-self: center;
-}
 .btn.book-button-edit {
   background-color: green;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0 0.8rem;
 }
 .btn.book-button-remove {
   background-color: red;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0 0.8rem;
 }
-.book-title {
-}
-.book-author {
+.pages {
+  position: absolute;
+  bottom: 3.2rem;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .btn.minus {
   background-color: red;
-  border-radius: 1rem 0 0 1rem;
-  border-right: 2px solid rgb(255, 255, 255);
+  border-radius: 0.4rem;
+  padding: 0 0.8rem;
+  width: 3.2rem;
+  height: 2.4rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 20%;
 }
 .btn.check {
   background-color: blue;
-  border-radius: 0 0 0 0;
-  border-left: 2px solid rgb(255, 255, 255);
-  border-right: 2px solid rgb(255, 255, 255);
+  border-radius: 0.4rem;
+  padding: 0 0.8rem;
+  width: 5.2rem;
+  height: 2.4rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .btn.plus {
   background-color: green;
-  border-radius: 0 1rem 1rem 0;
-  border-left: 2px solid rgb(255, 255, 255);
+  border-radius: 0.4rem;
+  padding: 0 0.8rem;
+  width: 3.2rem;
+  height: 2.4rem;
+  position: absolute;
+  bottom: 1rem;
+  right: 20%;
 }
-.book-completed {
-}
-.seperator {
-}
-.book-total {
-}
-
 .edit-popup-container {
   height: 100vh;
   width: 100vw;

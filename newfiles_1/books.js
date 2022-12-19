@@ -83,9 +83,8 @@ function handleAddBtn(e) {
       completedInput.value
     )
   );
-  console.log(myLibrary);
   resetForm(); //reset form
-  showBooks();
+  showBooks(myLibrary);
 }
 
 function Book(title, author, total, completed) {
@@ -97,10 +96,52 @@ function Book(title, author, total, completed) {
 }
 Book.prototype.createElementBook = function () {
   const div = document.createElement("div");
-  div.classList.add("");
+  div.classList.add("book-container");
   div.setAttribute("data-index", `${this.index}`);
-  div.innerHTML = `Title: ${this.title}, <br>Author: ${this.author},<br>Total pages: ${this.total},<br>Page you've read: ${this.conpleted}`;
+  div.innerHTML = `<h2 class="book-title" data-index="${this.index}">${this.title}</h2>
+  <h3 class="book-author" data-index="${this.index}">${this.author}</h3>
+  <h3 class="pages">
+  <span class="book-completed" data-index="${this.index}">${this.completed}</span>/<span class="book-total" data-index="${this.index}">${this.total}</span>
+  </h3>
+  <button class="btn book-button-edit" data-index="${this.index}">&#9999</button>
+  <button class="btn book-button-remove" data-index="${this.index}">&#10006</button>
+  <button class="btn minus" data-index="${this.index}">-</button>
+  <button class="btn check" data-index="${this.index}">✓</button>
+  <button class="btn plus" data-index="${this.index}">+</button>
+  `;
+  library.appendChild(div);
 };
+
+function showBooks(arr) {
+  library.innerHTML = ""; //refresh page
+  myLibrary.forEach((book) => {
+    book.index = myLibrary.indexOf(book); //refresh all indexes of books if we have change in myLibrary array
+    book.createElementBook();
+  });
+  defineElementsJustCreated();
+}
+
+function defineElementsJustCreated() {
+  //defined elements we just create and show
+  const editBtns = document.querySelectorAll(".book-button-edit");
+  const removeBtns = document.querySelectorAll(".book-button-remove");
+  const plusBtns = document.querySelectorAll(".btn.plus");
+  const minusBtns = document.querySelectorAll(".btn.minus");
+  const checkBtns = document.querySelectorAll(".btn.check");
+
+  // editBtns.forEach((editBtn) => editButtonsListener(editBtn));
+  removeBtns.forEach((removeBtn) => removeBtnsListener(removeBtn));
+  // plusBtns.forEach((plusBtn) => plusAndMinusListener(plusBtn));
+  // minusBtns.forEach((minusBtn) => plusAndMinusListener(minusBtn));
+  // checkBtns.forEach((checkBtn) => plusAndMinusListener(checkBtn));
+}
+
+function removeBtnsListener(removeBtn) {
+  removeBtn.addEventListener("click", (e) => {
+    myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1);
+    showBooks(myLibrary);
+  });
+}
 
 function resetForm() {
   [
@@ -119,4 +160,4 @@ function startedForm() {
     completedInput.value,
   ] = ["default", "default", "123", "123"];
 }
-startedForm();
+startedForm(); //this started Form make default value so that I can fix easily
