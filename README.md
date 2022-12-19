@@ -12,4 +12,5 @@ What I've learn :
   //show its parent
   })
 
-- we can call onclick like a function to trigger a specific element event
+- we can call onclick like a function to trigger a specific element event ex: formCtn.onclick()
+- we can ignore the key we dont want user to type in our inputs with input.onkeydown=e=>{if(e.key==Enter){e.preventDefault(); return ;}}

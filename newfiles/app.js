@@ -38,7 +38,7 @@ let currentIndex = undefined;
 let myLibrary = [
   {
     title: "How to think like a Programmer.",
-    author: "Non",
+    author: "Nicholas C.Zakas",
     total: 260,
     completed: 10,
   },
