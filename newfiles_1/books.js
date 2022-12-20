@@ -95,6 +95,8 @@ function Book(title, author, total, completed) {
   this.getInfo = function () {
     return [this.title, this.author, this.total, this.completed, this.index];
   };
+  this.getCompleted = () => this.completed;
+  this.getTotal = () => this.total;
   this.setTitle = (newTitle) => (this.title = newTitle);
   this.setAuthor = (newAuthor) => (this.author = newAuthor);
   this.setCompleted = (newCompleted) => (this.completed = newCompleted);
@@ -138,78 +140,95 @@ function defineElementsJustCreated() {
   const minusBtns = document.querySelectorAll(".btn.minus");
   const checkBtns = document.querySelectorAll(".btn.check");
 
-  editBtns.forEach((editBtn) => editBtnsListener(editBtn));
-  removeBtns.forEach((removeBtn) => removeBtnsListener(removeBtn));
-  plusBtns.forEach((plusBtn) => plusAndMinusListener(plusBtn));
-  minusBtns.forEach((minusBtn) => plusAndMinusListener(minusBtn));
-  checkBtns.forEach((checkBtn) => plusAndMinusListener(checkBtn));
+  editBtns.forEach((editBtn) =>
+    editBtn.addEventListener("click", editBtnsListener)
+  );
+  removeBtns.forEach((removeBtn) =>
+    removeBtn.addEventListener("click", removeBtnsListener)
+  );
+  plusBtns.forEach((plusBtn) =>
+    plusBtn.addEventListener("click", plusAndMinusListener)
+  );
+  minusBtns.forEach((minusBtn) =>
+    minusBtn.addEventListener("click", plusAndMinusListener)
+  );
+  checkBtns.forEach((checkBtn) =>
+    checkBtn.addEventListener("click", plusAndMinusListener)
+  );
 }
 //FIXME just finished removeBtns click event
 
-function removeBtnsListener(removeBtn) {
-  removeBtn.addEventListener("click", (e) => {
-    myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1);
+function removeBtnsListener(e) {
+  myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1);
+  showBooks(myLibrary);
+}
+
+function editBtnsListener(e) {
+  const thisEditBtnIndex = e.currentTarget.getAttribute("data-index");
+  const editPopupCtn = document.querySelector(".edit-popup-container");
+  const editPopup = document.querySelector(".edit-popup");
+  const confirmBtn = document.querySelector(".new-confirm");
+  const popupTitleInputs = document.querySelector(".new-title");
+  const popupAuthorInputs = document.querySelector(".new-author");
+  const popupCompletedInputs = document.querySelector(".new-completed-pages");
+  editPopupCtn.classList.remove("none");
+
+  editPopup.onclick = (e) => e.stopPropagation();
+  editPopupCtn.onclick = (e) => {
+    editPopupCtn.classList.add("none");
+    [
+      popupTitleInputs.value,
+      popupAuthorInputs.value,
+      popupCompletedInputs.value,
+    ] = ["", "", ""];
+  };
+  confirmBtn.onclick = (e) => {
+    if (popupTitleInputs.value != "") {
+      myLibrary[thisEditBtnIndex].setTitle(popupTitleInputs.value);
+    }
+    if (popupAuthorInputs.value != "") {
+      myLibrary[thisEditBtnIndex].setAuthor(popupAuthorInputs.value);
+    }
+    if (popupCompletedInputs.value != "") {
+      if (
+        Number(popupCompletedInputs.value) <=
+          myLibrary[thisEditBtnIndex].getTotal() &&
+        Number(popupCompletedInputs.value) >= 0 &&
+        Number.isInteger(Number(popupCompletedInputs.value))
+      ) {
+        myLibrary[thisEditBtnIndex].setCompleted(popupCompletedInputs.value);
+      } else {
+        alert(
+          "Please adjust the completed pages's number to sommething that is integer, in the range between 0 and total pages's number."
+        );
+      }
+    }
+    editPopupCtn.onclick();
     showBooks(myLibrary);
-  });
+  };
 }
 
-function editBtnsListener(btn) {
-  btn.addEventListener("click", (e) => {
-    const indexOfThisElement = e.currentTarget.getAttribute("data-index");
-    console.log(indexOfThisElement);
-    const editPopupCtn = document.querySelector(".edit-popup-container");
-    editPopupCtn.classList.remove("none");
-    const editPopup = document.querySelector(".edit-popup");
-    const confirmBtn = document.querySelector(".new-confirm");
-    const popupTitleInputs = document.querySelector(".new-title");
-    const popupAuthorInputs = document.querySelector(".new-author");
-    const popupCompletedInputs = document.querySelector(".new-completed-pages");
-
-    editPopup.onclick = (e) => e.stopPropagation();
-    editPopupCtn.onclick = () => {
-      editPopupCtn.classList.add("none");
-      [
-        popupTitleInputs.value,
-        popupAuthorInputs.value,
-        popupCompletedInputs.value,
-      ] = ["", "", ""];
-    };
-    confirmBtn.addEventListener("click", (e) => {
-      console.log("clicked");
-      myLibrary[indexOfThisElement].setTitle(popupTitleInputs.value);
-      myLibrary[indexOfThisElement].setAuthor(popupAuthorInputs.value);
-      myLibrary[indexOfThisElement].setCompleted(popupCompletedInputs.value);
-      showBooks(myLibrary);
-      editPopupCtn.onclick();
-      console.log("asd");
-      return;
-    });
-  });
-}
-
-function plusAndMinusListener(btn) {
-  btn.addEventListener("click", (e) => {
-    const thisCompletedSpan = document.querySelector(
-      `.book-completed[data-index="${e.target.getAttribute("data-index")}"]`
-    );
-    const thisTotalSpan = document.querySelector(
-      `.book-total[data-index="${e.target.getAttribute("data-index")}"]`
-    );
-    if (btn.classList.contains("plus")) {
-      if (thisCompletedSpan.textContent == thisTotalSpan.textContent) return;
-      myLibrary[e.target.getAttribute("data-index")].increaseCompleted();
-      showBooks(myLibrary);
-    }
-    if (btn.classList.contains("minus")) {
-      if (thisCompletedSpan.textContent < 1) return;
-      myLibrary[e.target.getAttribute("data-index")].decreaseCompleted();
-      showBooks(myLibrary);
-    }
-    if (btn.classList.contains("check")) {
-      myLibrary[e.target.getAttribute("data-index")].markCompleted();
-      showBooks(myLibrary);
-    }
-  });
+function plusAndMinusListener(e) {
+  const thisCompletedSpan = document.querySelector(
+    `.book-completed[data-index="${e.target.getAttribute("data-index")}"]`
+  );
+  const thisTotalSpan = document.querySelector(
+    `.book-total[data-index="${e.target.getAttribute("data-index")}"]`
+  );
+  if (e.target.classList.contains("plus")) {
+    if (thisCompletedSpan.textContent == thisTotalSpan.textContent) return;
+    myLibrary[e.target.getAttribute("data-index")].increaseCompleted();
+    showBooks(myLibrary);
+  }
+  if (e.target.classList.contains("minus")) {
+    if (thisCompletedSpan.textContent < 1) return;
+    myLibrary[e.target.getAttribute("data-index")].decreaseCompleted();
+    showBooks(myLibrary);
+  }
+  if (e.target.classList.contains("check")) {
+    myLibrary[e.target.getAttribute("data-index")].markCompleted();
+    showBooks(myLibrary);
+  }
 }
 
 function resetForm() {
@@ -218,7 +237,7 @@ function resetForm() {
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["12345", "1234", "123", "12"];
+  ] = ["", "", "", ""];
 } //remember to fix some default info of form
 
 function startedForm() {
@@ -227,6 +246,6 @@ function startedForm() {
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["default", "default", "1234", "123"];
+  ] = ["", "", "", ""];
 }
 startedForm(); //this started Form make default value so that I can fix easily
