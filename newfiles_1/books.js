@@ -135,6 +135,7 @@ function defineElementsJustCreated() {
   // minusBtns.forEach((minusBtn) => plusAndMinusListener(minusBtn));
   // checkBtns.forEach((checkBtn) => plusAndMinusListener(checkBtn));
 }
+//FIXME just finished removeBtns click event
 
 function removeBtnsListener(removeBtn) {
   removeBtn.addEventListener("click", (e) => {
