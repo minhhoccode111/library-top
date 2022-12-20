@@ -1,5 +1,4 @@
 "use strict";
-console.log("hello world from html");
 window.addEventListener("keydown", (e) => {
   if (e.key == "Enter") {
     e.preventDefault();
@@ -93,6 +92,17 @@ function Book(title, author, total, completed) {
     (this.total = total),
     (this.completed = completed),
     (this.index = myLibrary.length);
+  this.getInfo = function () {
+    return [this.title, this.author, this.total, this.completed, this.index];
+  };
+  this.setTitle = (newTitle) => (this.title = newTitle);
+  this.setAuthor = (newAuthor) => (this.author = newAuthor);
+  this.setCompleted = (newCompleted) => (this.completed = newCompleted);
+  // this.setTotal = (newTotal) => (this.total = newTotal); we don't have edit total pages feature
+  this.setIndex = (newIndex) => (this.index = newIndex);
+  this.increaseCompleted = () => this.completed++;
+  this.decreaseCompleted = () => this.completed--;
+  this.markCompleted = () => (this.completed = this.total);
 }
 Book.prototype.createElementBook = function () {
   const div = document.createElement("div");
@@ -111,11 +121,10 @@ Book.prototype.createElementBook = function () {
   `;
   library.appendChild(div);
 };
-
 function showBooks(arr) {
   library.innerHTML = ""; //refresh page
   myLibrary.forEach((book) => {
-    book.index = myLibrary.indexOf(book); //refresh all indexes of books if we have change in myLibrary array
+    book.setIndex(myLibrary.indexOf(book)); //refresh all indexes of books if we have change in myLibrary array
     book.createElementBook();
   });
   defineElementsJustCreated();
@@ -129,11 +138,11 @@ function defineElementsJustCreated() {
   const minusBtns = document.querySelectorAll(".btn.minus");
   const checkBtns = document.querySelectorAll(".btn.check");
 
-  // editBtns.forEach((editBtn) => editButtonsListener(editBtn));
+  editBtns.forEach((editBtn) => editBtnsListener(editBtn));
   removeBtns.forEach((removeBtn) => removeBtnsListener(removeBtn));
-  // plusBtns.forEach((plusBtn) => plusAndMinusListener(plusBtn));
-  // minusBtns.forEach((minusBtn) => plusAndMinusListener(minusBtn));
-  // checkBtns.forEach((checkBtn) => plusAndMinusListener(checkBtn));
+  plusBtns.forEach((plusBtn) => plusAndMinusListener(plusBtn));
+  minusBtns.forEach((minusBtn) => plusAndMinusListener(minusBtn));
+  checkBtns.forEach((checkBtn) => plusAndMinusListener(checkBtn));
 }
 //FIXME just finished removeBtns click event
 
@@ -144,13 +153,72 @@ function removeBtnsListener(removeBtn) {
   });
 }
 
+function editBtnsListener(btn) {
+  btn.addEventListener("click", (e) => {
+    const indexOfThisElement = e.currentTarget.getAttribute("data-index");
+    console.log(indexOfThisElement);
+    const editPopupCtn = document.querySelector(".edit-popup-container");
+    editPopupCtn.classList.remove("none");
+    const editPopup = document.querySelector(".edit-popup");
+    const confirmBtn = document.querySelector(".new-confirm");
+    const popupTitleInputs = document.querySelector(".new-title");
+    const popupAuthorInputs = document.querySelector(".new-author");
+    const popupCompletedInputs = document.querySelector(".new-completed-pages");
+
+    editPopup.onclick = (e) => e.stopPropagation();
+    editPopupCtn.onclick = () => {
+      editPopupCtn.classList.add("none");
+      [
+        popupTitleInputs.value,
+        popupAuthorInputs.value,
+        popupCompletedInputs.value,
+      ] = ["", "", ""];
+    };
+    confirmBtn.addEventListener("click", (e) => {
+      console.log("clicked");
+      myLibrary[indexOfThisElement].setTitle(popupTitleInputs.value);
+      myLibrary[indexOfThisElement].setAuthor(popupAuthorInputs.value);
+      myLibrary[indexOfThisElement].setCompleted(popupCompletedInputs.value);
+      showBooks(myLibrary);
+      editPopupCtn.onclick();
+      console.log("asd");
+      return;
+    });
+  });
+}
+
+function plusAndMinusListener(btn) {
+  btn.addEventListener("click", (e) => {
+    const thisCompletedSpan = document.querySelector(
+      `.book-completed[data-index="${e.target.getAttribute("data-index")}"]`
+    );
+    const thisTotalSpan = document.querySelector(
+      `.book-total[data-index="${e.target.getAttribute("data-index")}"]`
+    );
+    if (btn.classList.contains("plus")) {
+      if (thisCompletedSpan.textContent == thisTotalSpan.textContent) return;
+      myLibrary[e.target.getAttribute("data-index")].increaseCompleted();
+      showBooks(myLibrary);
+    }
+    if (btn.classList.contains("minus")) {
+      if (thisCompletedSpan.textContent < 1) return;
+      myLibrary[e.target.getAttribute("data-index")].decreaseCompleted();
+      showBooks(myLibrary);
+    }
+    if (btn.classList.contains("check")) {
+      myLibrary[e.target.getAttribute("data-index")].markCompleted();
+      showBooks(myLibrary);
+    }
+  });
+}
+
 function resetForm() {
   [
     titleInput.value,
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["123", "123", "123", "123"];
+  ] = ["12345", "1234", "123", "12"];
 } //remember to fix some default info of form
 
 function startedForm() {
@@ -159,6 +227,6 @@ function startedForm() {
     authorInput.value,
     totalInput.value,
     completedInput.value,
-  ] = ["default", "default", "123", "123"];
+  ] = ["default", "default", "1234", "123"];
 }
 startedForm(); //this started Form make default value so that I can fix easily
