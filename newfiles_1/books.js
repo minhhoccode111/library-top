@@ -16,6 +16,7 @@ const cancelBtn = document.querySelector(".cancel");
 const addBtn = document.querySelector(".add");
 const haveReadBtn = document.querySelector(".switch");
 const warnText = document.querySelector(".warn");
+const inputs = document.querySelectorAll(".inputs-container");
 
 let myLibrary = [];
 
@@ -33,6 +34,7 @@ haveReadBtn.onclick = (e) => {
 };
 completedInput.onkeydown = ignoreKeys;
 totalInput.onkeydown = ignoreKeys;
+
 function ignoreKeys(e) {
   if (
     //do nothing if out input has
@@ -45,11 +47,13 @@ function ignoreKeys(e) {
     return;
   }
 }
+
 totalInput.oninput = (e) => {
   if (e.target.value > 99999) {
     e.target.value = 100000;
   }
 }; // total pages has been limited to 100000
+
 completedInput.oninput = (e) => {
   if (Number(e.target.value) > Number(totalInput.value)) {
     // e.preventDefault();
@@ -57,6 +61,15 @@ completedInput.oninput = (e) => {
     return;
   }
 }; //completed pages has been limited to equal total pages
+inputs.forEach(
+  (e) =>
+    (e.onkeyup = (e) => {
+      if (e.key === "Enter") {
+        addBtn.click();
+      }
+    })
+);
+
 addBtn.onclick = handleAddBtn;
 
 function handleAddBtn(e) {
@@ -83,16 +96,15 @@ function handleAddBtn(e) {
   showBooks(myLibrary);
 }
 
-function Book(title, author, total, completed) {
-  (this.title = title),
-    (this.author = author),
-    (this.total = total),
-    (this.completed = completed),
-    (this.index = myLibrary.length);
-}
-Book.prototype = {
-  constructor: Book,
-  createElementBook: function () {
+class Book {
+  constructor(title, author, total, completed) {
+    this.title = title;
+    this.author = author;
+    this.total = total;
+    this.completed = completed;
+    this.index = myLibrary.length;
+  }
+  createElementBook() {
     const div = document.createElement("div");
     div.classList.add("book-container");
     div.setAttribute("data-index", `${this.index}`);
@@ -108,45 +120,45 @@ Book.prototype = {
       <button class="btn plus" data-index="${this.index}">+</button>
       `;
     library.appendChild(div);
-  },
-  getInfo: function () {
+  }
+  getInfo() {
     return [this.title, this.author, this.total, this.completed, this.index];
-  },
-  getTitle: function () {
+  }
+  getTitle() {
     return this.title;
-  },
-  getAuthor: function () {
+  }
+  getAuthor() {
     return this.author;
-  },
-  getCompleted: function () {
+  }
+  getCompleted() {
     return this.completed;
-  },
-  getTotal: function () {
-    return this.title;
-  },
-  setTitle: function (newTitle) {
+  }
+  getTotal() {
+    return this.total;
+  }
+  setTitle(newTitle) {
     this.title = newTitle;
-  },
-  setAuthor: function (newAuthor) {
+  }
+  setAuthor(newAuthor) {
     this.author = newAuthor;
-  },
-  setCompleted: function (newCompleted) {
+  }
+  setCompleted(newCompleted) {
     this.completed = newCompleted;
-  },
+  }
   // setTotal :function (newTotal) {this.total = newTotal}, we don't have edit total pages feature
-  setIndex: function (newIndex) {
+  setIndex(newIndex) {
     this.index = newIndex;
-  },
-  increaseCompleted: function () {
+  }
+  increaseCompleted() {
     this.completed++;
-  },
-  decreaseCompleted: function () {
+  }
+  decreaseCompleted() {
     this.completed--;
-  },
-  markCompleted: function () {
+  }
+  markCompleted() {
     this.completed = this.total;
-  },
-};
+  }
+}
 function showBooks(arr) {
   library.innerHTML = ""; //refresh page
   myLibrary.forEach((book) => {
@@ -180,7 +192,6 @@ function defineElementsJustCreated() {
     checkBtn.addEventListener("click", plusAndMinusListener)
   );
 }
-//FIXME just finished removeBtns click event
 
 function removeBtnsListener(e) {
   myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1); //remove book with the same index with the remove button that have been clicked
@@ -196,6 +207,7 @@ function editBtnsListener(e) {
   const popupTitleInputs = document.querySelector(".new-title");
   const popupAuthorInputs = document.querySelector(".new-author");
   const popupCompletedInputs = document.querySelector(".new-completed-pages");
+  const newCompletedPages = document.querySelector(".new-completed-pages");
   editPopupCtn.classList.remove("none");
 
   editPopup.onclick = (e) => e.stopPropagation();
@@ -207,6 +219,7 @@ function editBtnsListener(e) {
       popupCompletedInputs.value,
     ] = ["", "", ""];
   };
+  newCompletedPages.onkeydown = ignoreKeys;
   confirmBtn.onclick = (e) => {
     if (popupTitleInputs.value != "") {
       myLibrary[thisEditBtnIndex].setTitle(popupTitleInputs.value);
@@ -264,13 +277,4 @@ function resetForm() {
     completedInput.value,
   ] = ["", "", "", ""];
 } //remember to fix some default info of form
-
-function startedForm() {
-  [
-    titleInput.value,
-    authorInput.value,
-    totalInput.value,
-    completedInput.value,
-  ] = ["", "", "", ""];
-}
-startedForm(); //this started Form make default value so that I can add book and fix bugs easier
+resetForm();
