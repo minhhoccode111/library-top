@@ -1,8 +1,6 @@
 "use strict";
 window.addEventListener("keydown", (e) => {
-  if (e.key == "Enter") {
-    e.preventDefault();
-  }
+  if (e.key === "Enter") e.preventDefault();
 });
 
 const wrapper = document.querySelector(".wrapper");
@@ -20,7 +18,6 @@ const haveReadBtn = document.querySelector(".switch");
 const warnText = document.querySelector(".warn");
 
 let myLibrary = [];
-let currentIndex;
 
 plusBtn.onclick = () => formCtn.classList.remove("none");
 formCtn.onclick = () => formCtn.classList.add("none");
@@ -92,42 +89,69 @@ function Book(title, author, total, completed) {
     (this.total = total),
     (this.completed = completed),
     (this.index = myLibrary.length);
-  this.getInfo = function () {
-    return [this.title, this.author, this.total, this.completed, this.index];
-  };
-  this.getCompleted = () => this.completed;
-  this.getTotal = () => this.total;
-  this.setTitle = (newTitle) => (this.title = newTitle);
-  this.setAuthor = (newAuthor) => (this.author = newAuthor);
-  this.setCompleted = (newCompleted) => (this.completed = newCompleted);
-  // this.setTotal = (newTotal) => (this.total = newTotal); we don't have edit total pages feature
-  this.setIndex = (newIndex) => (this.index = newIndex);
-  this.increaseCompleted = () => this.completed++;
-  this.decreaseCompleted = () => this.completed--;
-  this.markCompleted = () => (this.completed = this.total);
 }
-Book.prototype.createElementBook = function () {
-  const div = document.createElement("div");
-  div.classList.add("book-container");
-  div.setAttribute("data-index", `${this.index}`);
-  div.innerHTML = `<h2 class="book-title" data-index="${this.index}">${this.title}</h2>
-  <h3 class="book-author" data-index="${this.index}">${this.author}</h3>
-  <h3 class="pages">
-  <span class="book-completed" data-index="${this.index}">${this.completed}</span>/<span class="book-total" data-index="${this.index}">${this.total}</span>
-  </h3>
-  <button class="btn book-button-edit" data-index="${this.index}">&#9999</button>
-  <button class="btn book-button-remove" data-index="${this.index}">&#10006</button>
-  <button class="btn minus" data-index="${this.index}">-</button>
-  <button class="btn check" data-index="${this.index}">✓</button>
-  <button class="btn plus" data-index="${this.index}">+</button>
-  `;
-  library.appendChild(div);
+Book.prototype = {
+  constructor: Book,
+  createElementBook: function () {
+    const div = document.createElement("div");
+    div.classList.add("book-container");
+    div.setAttribute("data-index", `${this.index}`);
+    div.innerHTML = `<h2 class="book-title" data-index="${this.index}">${this.title}</h2>
+      <h3 class="book-author" data-index="${this.index}">${this.author}</h3>
+      <h3 class="pages">
+      <span class="book-completed" data-index="${this.index}">${this.completed}</span>/<span class="book-total" data-index="${this.index}">${this.total}</span>
+      </h3>
+      <button class="btn book-button-edit" data-index="${this.index}">&#9999</button>
+      <button class="btn book-button-remove" data-index="${this.index}">&#10006</button>
+      <button class="btn minus" data-index="${this.index}">-</button>
+      <button class="btn check" data-index="${this.index}">✓</button>
+      <button class="btn plus" data-index="${this.index}">+</button>
+      `;
+    library.appendChild(div);
+  },
+  getInfo: function () {
+    return [this.title, this.author, this.total, this.completed, this.index];
+  },
+  getTitle: function () {
+    return this.title;
+  },
+  getAuthor: function () {
+    return this.author;
+  },
+  getCompleted: function () {
+    return this.completed;
+  },
+  getTotal: function () {
+    return this.title;
+  },
+  setTitle: function (newTitle) {
+    this.title = newTitle;
+  },
+  setAuthor: function (newAuthor) {
+    this.author = newAuthor;
+  },
+  setCompleted: function (newCompleted) {
+    this.completed = newCompleted;
+  },
+  // setTotal :function (newTotal) {this.total = newTotal}, we don't have edit total pages feature
+  setIndex: function (newIndex) {
+    this.index = newIndex;
+  },
+  increaseCompleted: function () {
+    this.completed++;
+  },
+  decreaseCompleted: function () {
+    this.completed--;
+  },
+  markCompleted: function () {
+    this.completed = this.total;
+  },
 };
 function showBooks(arr) {
   library.innerHTML = ""; //refresh page
   myLibrary.forEach((book) => {
     book.setIndex(myLibrary.indexOf(book)); //refresh all indexes of books if we have change in myLibrary array
-    book.createElementBook();
+    book.createElementBook(); //then re-create every book
   });
   defineElementsJustCreated();
 }
@@ -159,12 +183,13 @@ function defineElementsJustCreated() {
 //FIXME just finished removeBtns click event
 
 function removeBtnsListener(e) {
-  myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1);
-  showBooks(myLibrary);
+  myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1); //remove book with the same index with the remove button that have been clicked
+  showBooks(myLibrary); //refresh
 }
 
 function editBtnsListener(e) {
   const thisEditBtnIndex = e.currentTarget.getAttribute("data-index");
+  //get index of the editBtn we've clicked
   const editPopupCtn = document.querySelector(".edit-popup-container");
   const editPopup = document.querySelector(".edit-popup");
   const confirmBtn = document.querySelector(".new-confirm");
@@ -248,4 +273,4 @@ function startedForm() {
     completedInput.value,
   ] = ["", "", "", ""];
 }
-startedForm(); //this started Form make default value so that I can fix easily
+startedForm(); //this started Form make default value so that I can add book and fix bugs easier
