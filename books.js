@@ -1,11 +1,78 @@
 window.addEventListener("DOMContentLoaded", function () {
   "use strict";
   window.addEventListener("keydown", (e) => {
+    //prevent default submit key press
     if (e.key === "Enter") e.preventDefault();
   });
+  class Book {
+    constructor(title, author, total, completed) {
+      this.title = title;
+      this.author = author;
+      this.total = total;
+      this.completed = completed;
+      //each time new book is created, its index will be the length of the library (last index + 1)
+      this.index = myLibrary.length;
+    }
+
+    //each book will have a method to create itself a div to show its contents
+    createElementBook() {
+      const div = document.createElement("div");
+      div.classList.add("book-container");
+      div.setAttribute("data-index", `${this.index}`);
+      div.innerHTML = `<h2 class="book-title" data-index="${this.index}">${this.title}</h2>
+      <h3 class="book-author" data-index="${this.index}">${this.author}</h3>
+      <h3 class="pages">
+      <span class="book-completed" data-index="${this.index}">${this.completed}</span>/<span class="book-total" data-index="${this.index}">${this.total}</span>
+      </h3>
+      <button class="btn book-button-edit" data-index="${this.index}">&#9999</button>
+      <button class="btn book-button-remove" data-index="${this.index}">&#10006</button>
+      <button class="btn minus" data-index="${this.index}">-</button>
+      <button class="btn check" data-index="${this.index}">✓</button>
+      <button class="btn plus" data-index="${this.index}">+</button>
+      `;
+      library.appendChild(div);
+    }
+    getInfo() {
+      return [this.title, this.author, this.total, this.completed, this.index];
+    }
+    getTitle() {
+      return this.title;
+    }
+    getAuthor() {
+      return this.author;
+    }
+    getCompleted() {
+      return this.completed;
+    }
+    getTotal() {
+      return this.total;
+    }
+    setTitle(newTitle) {
+      this.title = newTitle;
+    }
+    setAuthor(newAuthor) {
+      this.author = newAuthor;
+    }
+    setCompleted(newCompleted) {
+      this.completed = newCompleted;
+    }
+    // setTotal :function (newTotal) {this.total = newTotal}, we don't have edit total pages feature
+    setIndex(newIndex) {
+      this.index = newIndex;
+    }
+    increaseCompleted() {
+      this.completed++;
+    }
+    decreaseCompleted() {
+      this.completed--;
+    }
+    markCompleted() {
+      this.completed = this.total;
+    }
+  }
   class Storage {
-    static setStorageLibrary() {
-      localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+    static setStorageLibrary(arr) {
+      localStorage.setItem("myLibrary", JSON.stringify(arr));
     }
     static getStorageLibrary() {
       let storage =
@@ -33,6 +100,14 @@ window.addEventListener("DOMContentLoaded", function () {
 
   //get local storage every time the page is loaded
   let myLibrary = Storage.getStorageLibrary();
+
+  //set every books to have Book class's prototype because when we use JSON.parse() in Storage.getStorageLibrary(), it will return an array with books object but objects inside it will not have the prototype of Book class
+  for (let book of myLibrary) {
+    Object.setPrototypeOf(book, Book.prototype);
+  }
+
+  //show all books
+  showBooks(myLibrary);
 
   //show form when plus button is clicked
   plusBtn.onclick = () => formCtn.classList.remove("none");
@@ -123,79 +198,17 @@ window.addEventListener("DOMContentLoaded", function () {
       )
     );
     resetForm(); //reset form
-    showBooks(myLibrary);
+    showBooks(myLibrary); //show books library
+    Storage.setStorageLibrary(myLibrary);
   }
 
-  class Book {
-    constructor(title, author, total, completed) {
-      this.title = title;
-      this.author = author;
-      this.total = total;
-      this.completed = completed;
-      this.index = myLibrary.length;
-    }
-    createElementBook() {
-      const div = document.createElement("div");
-      div.classList.add("book-container");
-      div.setAttribute("data-index", `${this.index}`);
-      div.innerHTML = `<h2 class="book-title" data-index="${this.index}">${this.title}</h2>
-      <h3 class="book-author" data-index="${this.index}">${this.author}</h3>
-      <h3 class="pages">
-      <span class="book-completed" data-index="${this.index}">${this.completed}</span>/<span class="book-total" data-index="${this.index}">${this.total}</span>
-      </h3>
-      <button class="btn book-button-edit" data-index="${this.index}">&#9999</button>
-      <button class="btn book-button-remove" data-index="${this.index}">&#10006</button>
-      <button class="btn minus" data-index="${this.index}">-</button>
-      <button class="btn check" data-index="${this.index}">✓</button>
-      <button class="btn plus" data-index="${this.index}">+</button>
-      `;
-      library.appendChild(div);
-    }
-    getInfo() {
-      return [this.title, this.author, this.total, this.completed, this.index];
-    }
-    getTitle() {
-      return this.title;
-    }
-    getAuthor() {
-      return this.author;
-    }
-    getCompleted() {
-      return this.completed;
-    }
-    getTotal() {
-      return this.total;
-    }
-    setTitle(newTitle) {
-      this.title = newTitle;
-    }
-    setAuthor(newAuthor) {
-      this.author = newAuthor;
-    }
-    setCompleted(newCompleted) {
-      this.completed = newCompleted;
-    }
-    // setTotal :function (newTotal) {this.total = newTotal}, we don't have edit total pages feature
-    setIndex(newIndex) {
-      this.index = newIndex;
-    }
-    increaseCompleted() {
-      this.completed++;
-    }
-    decreaseCompleted() {
-      this.completed--;
-    }
-    markCompleted() {
-      this.completed = this.total;
-    }
-  }
-  function showBooks(arr) {
-    library.innerHTML = ""; //refresh page
-    myLibrary.forEach((book) => {
-      book.setIndex(myLibrary.indexOf(book)); //refresh all indexes of books if we have change in myLibrary array
+  function showBooks() {
+    library.innerHTML = ""; //refresh page's content
+    myLibrary.map((book, index) => {
+      book.setIndex(index); //refresh all indexes of books if we have change in myLibrary array
       book.createElementBook(); //then re-create every book
     });
-    defineElementsJustCreated();
+    defineElementsJustCreated(); //define add buttons and functionalities on all new books
   }
 
   function defineElementsJustCreated() {
@@ -224,8 +237,12 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function removeBtnsListener(e) {
-    myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1); //remove book with the same index with the remove button that have been clicked
+    // myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1); //remove book with the same index with the remove button that have been clicked
+    myLibrary = myLibrary.filter(
+      (book) => book.index !== e.target.getAttribute("data-index")
+    );
     showBooks(myLibrary); //refresh
+    Storage.setStorageLibrary(myLibrary);
   }
 
   function editBtnsListener(e) {
@@ -240,17 +257,27 @@ window.addEventListener("DOMContentLoaded", function () {
     const newCompletedPages = document.querySelector(".new-completed-pages");
     editPopupCtn.classList.remove("none");
 
+    //stop propagation when we click the form, so that it won't close
     editPopup.onclick = (e) => e.stopPropagation();
+
+    //if we click outside of the edit form (edit popup container) then it will
     editPopupCtn.onclick = (e) => {
+      //hide form container
       editPopupCtn.classList.add("none");
       [
+        //reset all inputs in edit form
         popupTitleInputs.value,
         popupAuthorInputs.value,
         popupCompletedInputs.value,
       ] = ["", "", ""];
     };
+
+    //listen to ignore some invalid keys
     newCompletedPages.onkeydown = ignoreKeys;
+
+    //confirm button clicked
     confirmBtn.onclick = (e) => {
+      //change book's values base on edit form inputs
       if (popupTitleInputs.value != "") {
         myLibrary[thisEditBtnIndex].setTitle(popupTitleInputs.value);
       }
@@ -267,16 +294,20 @@ window.addEventListener("DOMContentLoaded", function () {
           myLibrary[thisEditBtnIndex].setCompleted(popupCompletedInputs.value);
         } else {
           alert(
-            "Please adjust the completed pages's number to sommething that is integer, in the range between 0 and total pages's number."
+            "Please adjust the completed pages's number to something that is integer, in the range between 0 and total pages's number."
           );
         }
       }
+
+      //hide form container
       editPopupCtn.onclick();
       showBooks(myLibrary);
+      Storage.setStorageLibrary(myLibrary);
     };
   }
 
   function plusAndMinusListener(e) {
+    //change book value base on buttons click
     const thisCompletedSpan = document.querySelector(
       `.book-completed[data-index="${e.target.getAttribute("data-index")}"]`
     );
@@ -286,19 +317,19 @@ window.addEventListener("DOMContentLoaded", function () {
     if (e.target.classList.contains("plus")) {
       if (thisCompletedSpan.textContent == thisTotalSpan.textContent) return;
       myLibrary[e.target.getAttribute("data-index")].increaseCompleted();
-      showBooks(myLibrary);
     }
     if (e.target.classList.contains("minus")) {
       if (thisCompletedSpan.textContent < 1) return;
       myLibrary[e.target.getAttribute("data-index")].decreaseCompleted();
-      showBooks(myLibrary);
     }
     if (e.target.classList.contains("check")) {
       myLibrary[e.target.getAttribute("data-index")].markCompleted();
-      showBooks(myLibrary);
     }
+    showBooks(myLibrary);
+    Storage.setStorageLibrary(myLibrary);
   }
 
+  //reset form to empty
   function resetForm() {
     [
       titleInput.value,
@@ -308,5 +339,5 @@ window.addEventListener("DOMContentLoaded", function () {
     ] = ["", "", "", ""];
   } //remember to fix some default info of form
   resetForm();
-  //Nothing to do because I have already do this project with Class pattern
+  // Storage.setStorageLibrary([]);//reset myLibrary on localStorage
 });
