@@ -278,3 +278,4 @@ function resetForm() {
   ] = ["", "", "", ""];
 } //remember to fix some default info of form
 resetForm();
+//Nothing to do because I have already do this project with Class pattern
