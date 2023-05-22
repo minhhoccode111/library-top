@@ -237,10 +237,7 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function removeBtnsListener(e) {
-    // myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1); //remove book with the same index with the remove button that have been clicked
-    myLibrary = myLibrary.filter(
-      (book) => book.index !== e.target.getAttribute("data-index")
-    );
+    myLibrary.splice(`${e.target.getAttribute("data-index")}`, 1); //remove book with the same index with the remove button that have been clicked
     showBooks(myLibrary); //refresh
     Storage.setStorageLibrary(myLibrary);
   }
