@@ -7,13 +7,18 @@ What I've learn :
 
 - select parentNode of a button when that button had a click event with:
 
-* button.addEventListener('click',e=>{
-  console.log(e.currentTarget.parentNode)
+```javascript
+button.addEventListener('click', (e) => {
+  console.log(e.currentTarget.parentNode);
   //show its parent
-  })
+});
+```
 
 - we can call onclick like a function to trigger a specific element event ex: formCtn.onclick()
-- we can ignore the key we dont want user to type in our inputs with input.onkeydown=e=>{if(e.key==Enter){e.preventDefault(); return ;}}
+
+- we can ignore the key we don't want user to type in our inputs with input.onkeydown=e=>{if(e.key==Enter){e.preventDefault(); return ;}}
+
+- Form validation with HTML and javaScript
 
 [View all my projects Live demo links](https://minhhoccode111.github.io/allProjectssLiveDemo/)
 

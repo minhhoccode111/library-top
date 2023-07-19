@@ -26,7 +26,7 @@ body {
   right: 0;
   height: 8rem;
   text-align: center;
-  background-color: rgb(21, 255, 0);
+  background-color: rgb(118, 255, 118);
   color: white;
   font-size: 4rem;
   line-height: 8rem;
@@ -39,7 +39,7 @@ body {
   border: 1px solid gray;
   background-color: rgb(238, 232, 170);
   opacity: 0.8;
-  color: red;
+  color: rgb(255, 121, 121);
   font-weight: bolder;
   font-size: 4rem;
   cursor: pointer;
@@ -77,7 +77,7 @@ body {
   font-weight: bolder;
 }
 .form-wrapper {
-  background-color: rgb(68, 0, 255);
+  background-color: rgb(124, 124, 255);
   padding: 1rem;
   margin: 1rem;
   border-radius: 2rem;
@@ -111,11 +111,11 @@ body {
 .form-container input:focus {
   outline: 1px solid green;
 }
-.form-container input[type="text"] {
+.form-container input[type='text'] {
   grid-column: 1/3;
   background-color: rgb(31, 29, 29);
 }
-.form-container input[type="number"] {
+.form-container input[type='number'] {
   background-color: rgb(31, 29, 29);
   width: 100%;
   /*don't know why if we are not setting width to 100% then it will grow and pass 1fr even if we set container's grid-template-columns to :1fr 1fr; */
@@ -138,7 +138,7 @@ body {
   position: relative;
 }
 .warn {
-  color: rgb(255, 230, 1);
+  color: rgb(255, 242, 121);
   font-size: 1.2rem;
   position: absolute;
   z-index: 200;
@@ -148,5 +148,5 @@ body {
   white-space: nowrap;
 }
 .cancel {
-  background-color: red;
+  background-color: rgb(255, 119, 119);
 }

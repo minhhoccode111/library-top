@@ -15,29 +15,17 @@
       <div class="form-container none">
         <div class="form-wrapper">
           <h2>Add new book</h2>
-          <form action="#">
+          <form>
             <div class="inputs-container">
-              <input type="text" class="title" value="" placeholder="Title" />
-              <input type="text" class="author" value="" placeholder="Author" />
-              <input
-                type="number"
-                class="total-pages"
-                value=""
-                placeholder="Total pages"
-              />
+              <input type="text" class="title" value="" placeholder="Title" required />
+              <input type="text" class="author" value="" placeholder="Author" required />
+              <input type="number" class="total-pages" value="" placeholder="Total pages" required />
               <div class="did-you-read">Did you read it ?</div>
-              <input
-                type="number"
-                class="completed-pages"
-                value=""
-                placeholder="Completed pages"
-              />
+              <input type="number" class="completed-pages" value="" placeholder="Completed pages" required />
               <button type="button" class="switch">Yes, I've read it.</button>
               <button type="button" class="cancel">Cancel</button>
-              <button type="submit" class="add">
-                Add
-                <span class="warn none">Please fill every inputs!</span>
-              </button>
+              <button type="submit" class="add">Add</button>
+              <span class="warn none">Please fill every inputs!</span>
             </div>
           </form>
         </div>
@@ -46,18 +34,11 @@
     </div>
     <div class="edit-popup-container none">
       <div class="edit-popup">
-        <h2 class="new-h2">
-          Feel free to leave any input field empty if you don't want to change
-          its contents.
-        </h2>
+        <h2 class="new-h2">Feel free to leave any input field empty if you don't want to change its contents.</h2>
         <input type="text" class="new-title" placeholder="Edit Title" />
         <input type="text" class="new-author" placeholder="Edit Author" />
 
-        <input
-          type="number"
-          class="new-completed-pages"
-          placeholder="Edit completed pages"
-        />
+        <input type="number" class="new-completed-pages" placeholder="Edit completed pages" />
         <button type="button" class="new-confirm">Confirm</button>
       </div>
     </div>
