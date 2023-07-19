@@ -7,7 +7,8 @@
     <title>Books Library</title>
     <link rel="stylesheet" href="./books.css" />
     <link rel="stylesheet" href="./style.css" />
-    <script src="./books.js" defer></script>
+    <script src="./script.js" defer></script>
+    <!-- <script src="./books.js" defer></script> -->
   </head>
   <body>
     <div class="wrapper">
@@ -17,11 +18,11 @@
           <h2>Add new book</h2>
           <form>
             <div class="inputs-container">
-              <input type="text" class="title" value="" placeholder="Title" required />
-              <input type="text" class="author" value="" placeholder="Author" required />
-              <input type="number" class="total-pages" value="" placeholder="Total pages" required />
+              <input type="text" class="title" value="" placeholder="Title" required maxlength="100" />
+              <input type="text" class="author" value="" placeholder="Author" required maxlength="100" />
+              <input type="number" class="total-pages" value="" placeholder="Total pages" required min="1" />
               <div class="did-you-read">Did you read it ?</div>
-              <input type="number" class="completed-pages" value="" placeholder="Completed pages" required />
+              <input type="number" class="completed-pages" value="" placeholder="Completed pages" min="1" required />
               <button type="button" class="switch">Yes, I've read it.</button>
               <button type="button" class="cancel">Cancel</button>
               <button type="submit" class="add">Add</button>

@@ -1,295 +1,187 @@
-window.addEventListener('DOMContentLoaded', function () {
-  'use strict';
+// edit module used to edit book
+const edit = (() => {
+  let obj;
+  let html;
 
-  class Book {
-    constructor(title, author, total, completed) {
-      this.title = title;
-      this.author = author;
-      this.total = total;
-      this.completed = completed;
-      //each time new book is created, its index will be the length of the library (last index + 1)
-      this.index = myLibrary.length;
-    }
+  // interact with current obj
+  const getObj = () => obj;
+  const setObj = (o) => (obj = o);
 
-    //each book will have a method to create itself a div to show its contents
-    createElementBook() {
-      const div = document.createElement('div');
-      div.classList.add('book-container');
-      div.setAttribute('data-index', `${this.index}`);
-      div.innerHTML = `<h2 class="book-title" data-index="${this.index}">${this.title}</h2>
-      <h3 class="book-author" data-index="${this.index}">${this.author}</h3>
-      <h3 class="pages">
-      <span class="book-completed" data-index="${this.index}">${this.completed}</span>/<span class="book-total" data-index="${this.index}">${this.total}</span>
-      </h3>
-      <button class="btn book-button-edit" data-index="${this.index}">&#9999</button>
-      <button class="btn book-button-remove" data-index="${this.index}">&#10006</button>
-      <button class="btn minus" data-index="${this.index}">-</button>
-      <button class="btn check" data-index="${this.index}">✓</button>
-      <button class="btn plus" data-index="${this.index}">+</button>
-      `;
-      library.appendChild(div);
-    }
-    getInfo() {
-      return [this.title, this.author, this.total, this.completed, this.index];
-    }
-    getTitle() {
-      return this.title;
-    }
-    getAuthor() {
-      return this.author;
-    }
-    getCompleted() {
-      return this.completed;
-    }
-    getTotal() {
-      return this.total;
-    }
-    setTitle(newTitle) {
-      this.title = newTitle;
-    }
-    setAuthor(newAuthor) {
-      this.author = newAuthor;
-    }
-    setCompleted(newCompleted) {
-      this.completed = newCompleted;
-    }
-    // setTotal :function (newTotal) {this.total = newTotal}, we don't have edit total pages feature
-    setIndex(newIndex) {
-      this.index = newIndex;
-    }
-    increaseCompleted() {
-      this.completed++;
-    }
-    decreaseCompleted() {
-      this.completed--;
-    }
-    markCompleted() {
-      this.completed = this.total;
-    }
-  }
+  // interact with current html
+  const getHtml = () => html;
+  const setHtml = (element) => (html = element);
 
-  const Storage = () => {};
-  Storage.get = function (name) {
-    return localStorage.getItem(name) === null ? [] : JSON.parse(localStorage.getItem(name));
+  // fill edit form with current obj's value
+  const fillEditForm = () => {};
+
+  //
+  return {
+    getObj,
+    setObj,
+    getHtml,
+    setHtml,
   };
-  Storage.set = function (name, arr) {
-    localStorage.setItem(name, JSON.stringify(arr));
-  };
+})();
 
-  const wrapper = document.querySelector('.wrapper');
+const display = (() => {
   const library = document.querySelector('.library');
-  const formCtn = document.querySelector('.form-container');
-  const formWrapper = document.querySelector('.form-wrapper');
-  const plusBtn = document.querySelector('.plus-button');
-  const titleInput = document.querySelector('.title');
-  const authorInput = document.querySelector('.author');
-  const totalInput = document.querySelector('.total-pages');
-  const completedInput = document.querySelector('.completed-pages');
-  const cancelBtn = document.querySelector('.cancel');
-  const addBtn = document.querySelector('.add');
-  const haveReadBtn = document.querySelector('.switch');
-  const warnText = document.querySelector('.warn');
-  const inputs = document.querySelectorAll('.inputs-container');
 
-  //get local storage every time the page is loaded
-  let myLibrary = Storage.get('library');
-
-  //set every books to have Book class's prototype because when we use JSON.parse() in Storage.getStorageLibrary(), it will return an array with books object but objects inside it will not have the prototype of Book class
-  for (let book of myLibrary) {
-    Object.setPrototypeOf(book, Book.prototype);
-  }
-
-  //show all books
-  showBooks(myLibrary);
-
-  //show form when plus button is clicked
-  plusBtn.onclick = () => formCtn.classList.remove('none');
-
-  //hide form when click on form container (outside of form)
-  formCtn.onclick = () => formCtn.classList.add('none');
-
-  //stop propagation when we click on the form so that it doesn't fire to the form container
-  formWrapper.onclick = (e) => e.stopPropagation();
-
-  //hide form and reset all form values when we clicked on cancel button
-  cancelBtn.onclick = () => {
-    formCtn.classList.add('none');
-    resetForm();
+  const books = (arr) => {
+    library.innerHTML = '';
+    for (const book of arr) {
+      library.appendChild(book.createHtml());
+    }
   };
 
-  //make completed pages equal to total pages when click have read button
-  haveReadBtn.onclick = (e) => {
-    completedInput.value = totalInput.value;
-    e.preventDefault();
-    e.stopPropagation();
+  return {
+    books,
   };
+})();
 
-  //ignore keys that isn't legit
-  completedInput.onkeydown = ignoreKeys;
-  totalInput.onkeydown = ignoreKeys;
+// Book's prototype
+const proto = {
+  createHtml() {
+    const div = document.createElement('div');
+    div.classList.add('book-container');
 
-  function ignoreKeys(e) {
-    if (
-      //do nothing if our input has
-      (e.target.value == '' && e.key == '0') || // start with a zero 0
-      e.key == '-' || //minus
-      e.key == '.' || //dot
-      e.key == '.' //another kind of dot
-    ) {
-      e.preventDefault();
-      return;
-    }
-  }
+    const h2 = document.createElement('h2');
+    h2.classList.add('book-title');
+    h2.textContent = this.title;
 
-  //limit total pages
-  totalInput.oninput = (e) => {
-    if (e.target.value > 99999) {
-      e.target.value = 100000;
-    }
-  }; // total pages has been limited to 100000
+    const h3Author = document.createElement('h3');
+    h3Author.classList.add('book-author');
+    h3Author.textContent = this.author;
 
-  //limit completed pages
-  completedInput.oninput = (e) => {
-    if (Number(e.target.value) > Number(totalInput.value)) {
-      // e.preventDefault();
-      e.target.value = totalInput.value;
-      return;
-    }
-  }; //completed pages has been limited to equal total pages
+    const h3Pages = document.createElement('h3');
+    h3Pages.classList.add('pages');
 
-  //close form when we submit with "enter" key
-  inputs.forEach(
-    (e) =>
-      (e.onkeyup = (e) => {
-        if (e.key === 'Enter') {
-          addBtn.click();
-        }
-      })
-  );
+    const spanCompleted = document.createElement('span');
+    spanCompleted.classList.add('book-completed');
+    spanCompleted.textContent = this.completed;
 
-  //add book when add button is clicked
-  addBtn.onclick = handleAddBtn;
+    const spanSlash = document.createElement('span');
+    spanSlash.textContent = '/';
 
-  function handleAddBtn(e) {
-    e.preventDefault();
-    if (titleInput.value === '' || authorInput.value === '' || totalInput.value == '' || completedInput.value == '') {
-      return warnText.classList.remove('none');
-    } // show warn text and return
-    warnText.classList.add('none'); //remove warn text
-    formCtn.classList.add('none'); //remove form
-    myLibrary.push(new Book(titleInput.value, authorInput.value, totalInput.value, completedInput.value));
-    resetForm(); //reset form
-    showBooks(myLibrary); //show books library
-    Storage.setStorageLibrary(myLibrary);
-  }
+    const spanTotal = document.createElement('span');
+    spanTotal.classList.add('book-total');
+    spanTotal.textContent = this.total;
 
-  function showBooks() {
-    library.innerHTML = ''; //refresh page's content
-    myLibrary.map((book, index) => {
-      book.setIndex(index); //refresh all indexes of books if we have change in myLibrary array
-      book.createElementBook(); //then re-create every book
-    });
-    defineElementsJustCreated(); //define add buttons and functionalities on all new books
-  }
+    h3Pages.appendChild(spanCompleted);
+    h3Pages.appendChild(spanSlash);
+    h3Pages.appendChild(spanTotal);
 
-  function defineElementsJustCreated() {
-    //defined elements we just create and show
-    const editBtns = document.querySelectorAll('.book-button-edit');
-    const removeBtns = document.querySelectorAll('.book-button-remove');
-    const plusBtns = document.querySelectorAll('.btn.plus');
-    const minusBtns = document.querySelectorAll('.btn.minus');
-    const checkBtns = document.querySelectorAll('.btn.check');
+    const btnEdit = document.createElement('button');
+    btnEdit.classList.add('btn', 'book-button-edit');
+    btnEdit.textContent = '✎';
 
-    editBtns.forEach((editBtn) => editBtn.addEventListener('click', editBtnsListener));
-    removeBtns.forEach((removeBtn) => removeBtn.addEventListener('click', removeBtnsListener));
-    plusBtns.forEach((plusBtn) => plusBtn.addEventListener('click', plusAndMinusListener));
-    minusBtns.forEach((minusBtn) => minusBtn.addEventListener('click', plusAndMinusListener));
-    checkBtns.forEach((checkBtn) => checkBtn.addEventListener('click', plusAndMinusListener));
-  }
+    const btnRemove = document.createElement('button');
+    btnRemove.classList.add('btn', 'book-button-remove');
+    btnRemove.textContent = '✖';
 
-  function removeBtnsListener(e) {
-    myLibrary.splice(`${e.target.getAttribute('data-index')}`, 1); //remove book with the same index with the remove button that have been clicked
-    showBooks(myLibrary); //refresh
-    Storage.setStorageLibrary(myLibrary);
-  }
+    const btnMinus = document.createElement('button');
+    btnMinus.classList.add('btn', 'minus');
+    btnMinus.textContent = '-';
 
-  function editBtnsListener(e) {
-    const thisEditBtnIndex = e.currentTarget.getAttribute('data-index');
-    //get index of the editBtn we've clicked
-    const editPopupCtn = document.querySelector('.edit-popup-container');
-    const editPopup = document.querySelector('.edit-popup');
-    const confirmBtn = document.querySelector('.new-confirm');
-    const popupTitleInputs = document.querySelector('.new-title');
-    const popupAuthorInputs = document.querySelector('.new-author');
-    const popupCompletedInputs = document.querySelector('.new-completed-pages');
-    const newCompletedPages = document.querySelector('.new-completed-pages');
-    editPopupCtn.classList.remove('none');
+    const btnCheck = document.createElement('button');
+    btnCheck.classList.add('btn', 'check');
+    btnCheck.textContent = '✓';
 
-    //stop propagation when we click the form, so that it won't close
-    editPopup.onclick = (e) => e.stopPropagation();
+    const btnPlus = document.createElement('button');
+    btnPlus.classList.add('btn', 'plus');
+    btnPlus.textContent = '+';
 
-    //if we click outside of the edit form (edit popup container) then it will
-    editPopupCtn.onclick = (e) => {
-      //hide form container
-      editPopupCtn.classList.add('none');
-      [
-        //reset all inputs in edit form
-        popupTitleInputs.value,
-        popupAuthorInputs.value,
-        popupCompletedInputs.value,
-      ] = ['', '', ''];
-    };
+    div.appendChild(h2);
+    div.appendChild(h3Author);
+    div.appendChild(h3Pages);
+    div.appendChild(btnEdit);
+    div.appendChild(btnRemove);
+    div.appendChild(btnMinus);
+    div.appendChild(btnCheck);
+    div.appendChild(btnPlus);
 
-    //listen to ignore some invalid keys
-    newCompletedPages.onkeydown = ignoreKeys;
+    return this; // for methods chaining
+  },
+};
 
-    //confirm button clicked
-    confirmBtn.onclick = (e) => {
-      //change book's values base on edit form inputs
-      if (popupTitleInputs.value != '') {
-        myLibrary[thisEditBtnIndex].setTitle(popupTitleInputs.value);
-      }
-      if (popupAuthorInputs.value != '') {
-        myLibrary[thisEditBtnIndex].setAuthor(popupAuthorInputs.value);
-      }
-      if (popupCompletedInputs.value != '') {
-        if (Number(popupCompletedInputs.value) <= myLibrary[thisEditBtnIndex].getTotal() && Number(popupCompletedInputs.value) >= 0 && Number.isInteger(Number(popupCompletedInputs.value))) {
-          myLibrary[thisEditBtnIndex].setCompleted(popupCompletedInputs.value);
-        } else {
-          alert("Please adjust the completed pages's number to something that is integer, in the range between 0 and total pages's number.");
-        }
-      }
+// Factory Function
+const Book = (title, author, total, completed) => {
+  return Object.assign(Object.create(proto), { title, author, total, completed });
+};
 
-      //hide form container
-      editPopupCtn.onclick();
-      showBooks(myLibrary);
-      Storage.setStorageLibrary(myLibrary);
-    };
-  }
+//static storage methods
+Book.get = function (name) {
+  return localStorage.getItem(name) === null ? [] : JSON.parse(localStorage.getItem(name));
+};
 
-  function plusAndMinusListener(e) {
-    //change book value base on buttons click
-    const thisCompletedSpan = document.querySelector(`.book-completed[data-index="${e.target.getAttribute('data-index')}"]`);
-    const thisTotalSpan = document.querySelector(`.book-total[data-index="${e.target.getAttribute('data-index')}"]`);
-    if (e.target.classList.contains('plus')) {
-      if (thisCompletedSpan.textContent == thisTotalSpan.textContent) return;
-      myLibrary[e.target.getAttribute('data-index')].increaseCompleted();
-    }
-    if (e.target.classList.contains('minus')) {
-      if (thisCompletedSpan.textContent < 1) return;
-      myLibrary[e.target.getAttribute('data-index')].decreaseCompleted();
-    }
-    if (e.target.classList.contains('check')) {
-      myLibrary[e.target.getAttribute('data-index')].markCompleted();
-    }
-    showBooks(myLibrary);
-    Storage.setStorageLibrary(myLibrary);
-  }
+Book.set = function (name, arr) {
+  localStorage.setItem(name, JSON.stringify(arr));
+};
 
-  //reset form to empty
-  function resetForm() {
-    [titleInput.value, authorInput.value, totalInput.value, completedInput.value] = ['', '', '', ''];
-  } //remember to fix some default info of form
+// books data
+let data = [];
+// let data = Book.get('books');
+
+const wrapper = document.querySelector('.wrapper');
+const formCtn = document.querySelector('.form-container');
+const formWrapper = document.querySelector('.form-wrapper');
+const plusBtn = document.querySelector('.plus-button');
+const form = document.querySelector('.form-wrapper form');
+const title = form.querySelector('.title');
+const author = form.querySelector('.author');
+const total = form.querySelector('.total-pages');
+const completed = form.querySelector('.completed-pages');
+const cancelBtn = form.querySelector('.cancel');
+const addBtn = form.querySelector('.add');
+const haveReadBtn = form.querySelector('.switch');
+const warnText = form.querySelector('.warn');
+const inputs = document.querySelectorAll('.inputs-container');
+
+//show form when plus button is clicked
+plusBtn.onclick = () => formCtn.classList.remove('none');
+
+//hide form and reset all form values when we clicked on cancel button
+cancelBtn.onclick = () => {
+  formCtn.classList.add('none');
   resetForm();
-  // Storage.setStorageLibrary([]);//reset myLibrary on localStorage
+};
+
+//make completed pages equal to total pages when click have read button
+haveReadBtn.onclick = (e) => (completed.value = total.value);
+
+// submit with button
+addBtn.onclick = (e) => form.submit();
+
+// control number inputs
+const ignoreDigits = (e) => {
+  // ignore start with zero(s)
+  if (e.target.value === '' && e.code === 'Digit0') {
+    e.preventDefault();
+    return;
+  }
+  // ignore when value > 1000000
+  if (+e.target.value > 10e5) {
+    e.target.value = 10e5;
+    e.preventDefault();
+    return;
+  }
+};
+
+total.addEventListener('keydown', ignoreDigits);
+completed.addEventListener('keydown', ignoreDigits);
+
+form.addEventListener('submit', (e) => {
+  console.log(e);
+  const book = Book(title.value, author.value, total.value, completed.value);
+  console.log(book);
+  data.push(book);
+  // Book.set('books', data);
+  display.books(data);
 });
+
+//reset form to empty
+function resetForm() {
+  [title.value, author.value, total.value, completed.value] = ['', '', '', ''];
+}
+
+//
+window.addEventListener('DOMContentLoaded', (e) => {});
