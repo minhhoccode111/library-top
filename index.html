@@ -34,14 +34,14 @@
       <button type="button" class="plus-button">+</button>
     </div>
     <div class="edit-popup-container none">
-      <div class="edit-popup">
+      <form action="#" class="edit-popup">
         <h2 class="new-h2">Feel free to leave any input field empty if you don't want to change its contents.</h2>
-        <input type="text" class="new-title" placeholder="Edit Title" />
-        <input type="text" class="new-author" placeholder="Edit Author" />
+        <input type="text" class="new-title" placeholder="Edit Title" required maxlength="100" />
+        <input type="text" class="new-author" placeholder="Edit Author" required maxlength="100" />
 
-        <input type="number" class="new-completed-pages" placeholder="Edit completed pages" />
-        <button type="button" class="new-confirm">Confirm</button>
-      </div>
+        <input type="number" class="new-completed-pages" placeholder="Edit completed pages" required min="0" />
+        <button type="submit" class="new-confirm">Confirm</button>
+      </form>
     </div>
     <div class="library"></div>
   </body>

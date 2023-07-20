@@ -1,7 +1,28 @@
+const storage = (() => {
+  const get = (name) => {
+    return localStorage.getItem(name) === null ? [] : JSON.parse(localStorage.getItem(name));
+  };
+
+  const set = (name, v) => {
+    localStorage.setItem(name, JSON.stringify(v));
+  };
+
+  return { get, set };
+})();
+
 // edit module used to edit book
 const edit = (() => {
   let obj;
-  let html;
+  let html; // something like {h2Title,h3Author,spanCompleted}
+
+  const formCtn = document.querySelector('.edit-popup-container');
+  const form = document.querySelector('form.edit-popup');
+  const confirm = document.querySelector('.new-confirm');
+  const title = document.querySelector('.new-title');
+  const author = document.querySelector('.new-author');
+  const completed = document.querySelector('.new-completed-pages');
+
+  confirm.addEventListener('click', (e) => form.submit());
 
   // interact with current obj
   const getObj = () => obj;
@@ -9,20 +30,38 @@ const edit = (() => {
 
   // interact with current html
   const getHtml = () => html;
-  const setHtml = (element) => (html = element);
-
-  // edit html base on form submit
-  const editHtml = () => {};
+  const setHtml = (o) => (html = o);
 
   // fill edit form with current obj's value
-  const fillEditForm = () => {};
+  const fillEditForm = () => {
+    formCtn.classList.remove('none');
+    title.value = obj.title;
+    author.value = obj.author;
+    completed.value = obj.completed;
+  };
 
-  //
+  // update html base on edited contents
+  const updateHtml = () => {
+    html.h2Title.textContent = obj.title;
+    html.h3Author.textContent = obj.author;
+    html.spanCompleted.textContent = obj.completed;
+  };
+
+  // listen for form submit to change current obj
+  form.addEventListener('submit', (e) => {
+    obj.title = title.value;
+    obj.author = author.value;
+    obj.completed = completed.value;
+    formCtn.classList.add('none');
+    updateHtml();
+    storage.set('books', data);
+  });
   return {
     getObj,
     setObj,
     getHtml,
     setHtml,
+    fillEditForm,
   };
 })();
 
@@ -32,7 +71,6 @@ const display = (() => {
   const books = (arr) => {
     library.innerHTML = '';
     for (const book of arr) {
-      console.log(book.createHtml());
       library.appendChild(book.createHtml());
     }
   };
@@ -44,13 +82,13 @@ const display = (() => {
 
 // Book's prototype
 const proto = {
-  createHtml() {
+  createHtml: function () {
     const div = document.createElement('div');
     div.classList.add('book-container');
 
-    const h2 = document.createElement('h2');
-    h2.classList.add('book-title');
-    h2.textContent = this.title;
+    const h2Title = document.createElement('h2Title');
+    h2Title.classList.add('book-title');
+    h2Title.textContent = this.title;
 
     const h3Author = document.createElement('h3');
     h3Author.classList.add('book-author');
@@ -78,38 +116,47 @@ const proto = {
     btnEdit.classList.add('btn', 'book-button-edit');
     btnEdit.textContent = '✎';
     btnEdit.addEventListener('click', (e) => {
-      // do something
+      edit.setObj(this);
+      edit.setHtml({ h2Title, h3Author, spanCompleted });
+      edit.fillEditForm();
     });
 
     const btnRemove = document.createElement('button');
     btnRemove.classList.add('btn', 'book-button-remove');
     btnRemove.textContent = '✖';
     btnRemove.addEventListener('click', (e) => {
-      // do something
+      div.remove();
+      data.splice(data.indexOf(this), 1);
+      storage.set('books', data);
     });
 
     const btnMinus = document.createElement('button');
     btnMinus.classList.add('btn', 'minus');
     btnMinus.textContent = '-';
     btnMinus.addEventListener('click', (e) => {
-      // do something
+      if (this.completed === 0) return;
+      this.completed--;
+      +spanCompleted.textContent--;
     });
 
     const btnCheck = document.createElement('button');
     btnCheck.classList.add('btn', 'check');
     btnCheck.textContent = '✓';
     btnCheck.addEventListener('click', (e) => {
-      // do something
+      this.completed = this.total;
+      spanCompleted.textContent = spanTotal.textContent;
     });
 
     const btnPlus = document.createElement('button');
     btnPlus.classList.add('btn', 'plus');
     btnPlus.textContent = '+';
     btnPlus.addEventListener('click', (e) => {
-      // do something
+      if (this.completed === this.total) return;
+      this.completed++;
+      +spanCompleted.textContent++;
     });
 
-    div.appendChild(h2);
+    div.appendChild(h2Title);
     div.appendChild(h3Author);
     div.appendChild(h3Pages);
     div.appendChild(btnEdit);
@@ -128,7 +175,13 @@ const Book = (title, author, total, completed) => {
 };
 
 // books data
-let data = [];
+let data = storage.get('books');
+
+const restoreData = () => {
+  for (const book of data) {
+    Object.setPrototypeOf(book, proto);
+  }
+};
 
 const wrapper = document.querySelector('.wrapper');
 const formCtn = document.querySelector('.form-container');
@@ -156,9 +209,8 @@ plusBtn.addEventListener('click', (e) => toggleFormCtn());
 
 //hide form and reset all form values when we clicked on cancel button
 cancelBtn.addEventListener('click', (e) => {
-  // form.reset();
+  form.reset();
   resetForm();
-  toggleFormCtn();
 });
 
 //make completed pages equal to total pages when click have read button
@@ -186,14 +238,20 @@ total.addEventListener('keydown', ignoreDigits);
 completed.addEventListener('keydown', ignoreDigits);
 
 form.addEventListener('submit', (e) => {
-  const book = Book(title.value, author.value, total.value, completed.value);
+  const book = Book(title.value, author.value, +total.value, +completed.value);
 
   data.push(book);
+
+  storage.set('books', data);
 
   display.books(data);
 
   toggleFormCtn();
 
-  // form.reset();
-  resetForm();
+  form.reset();
+});
+
+window.addEventListener('DOMContentLoaded', (e) => {
+  restoreData();
+  display.books(data);
 });
