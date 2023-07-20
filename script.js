@@ -11,6 +11,9 @@ const edit = (() => {
   const getHtml = () => html;
   const setHtml = (element) => (html = element);
 
+  // edit html base on form submit
+  const editHtml = () => {};
+
   // fill edit form with current obj's value
   const fillEditForm = () => {};
 
@@ -29,6 +32,7 @@ const display = (() => {
   const books = (arr) => {
     library.innerHTML = '';
     for (const book of arr) {
+      console.log(book.createHtml());
       library.appendChild(book.createHtml());
     }
   };
@@ -73,22 +77,37 @@ const proto = {
     const btnEdit = document.createElement('button');
     btnEdit.classList.add('btn', 'book-button-edit');
     btnEdit.textContent = '✎';
+    btnEdit.addEventListener('click', (e) => {
+      // do something
+    });
 
     const btnRemove = document.createElement('button');
     btnRemove.classList.add('btn', 'book-button-remove');
     btnRemove.textContent = '✖';
+    btnRemove.addEventListener('click', (e) => {
+      // do something
+    });
 
     const btnMinus = document.createElement('button');
     btnMinus.classList.add('btn', 'minus');
     btnMinus.textContent = '-';
+    btnMinus.addEventListener('click', (e) => {
+      // do something
+    });
 
     const btnCheck = document.createElement('button');
     btnCheck.classList.add('btn', 'check');
     btnCheck.textContent = '✓';
+    btnCheck.addEventListener('click', (e) => {
+      // do something
+    });
 
     const btnPlus = document.createElement('button');
     btnPlus.classList.add('btn', 'plus');
     btnPlus.textContent = '+';
+    btnPlus.addEventListener('click', (e) => {
+      // do something
+    });
 
     div.appendChild(h2);
     div.appendChild(h3Author);
@@ -99,7 +118,7 @@ const proto = {
     div.appendChild(btnCheck);
     div.appendChild(btnPlus);
 
-    return this; // for methods chaining
+    return div;
   },
 };
 
@@ -108,18 +127,8 @@ const Book = (title, author, total, completed) => {
   return Object.assign(Object.create(proto), { title, author, total, completed });
 };
 
-//static storage methods
-Book.get = function (name) {
-  return localStorage.getItem(name) === null ? [] : JSON.parse(localStorage.getItem(name));
-};
-
-Book.set = function (name, arr) {
-  localStorage.setItem(name, JSON.stringify(arr));
-};
-
 // books data
 let data = [];
-// let data = Book.get('books');
 
 const wrapper = document.querySelector('.wrapper');
 const formCtn = document.querySelector('.form-container');
@@ -136,20 +145,27 @@ const haveReadBtn = form.querySelector('.switch');
 const warnText = form.querySelector('.warn');
 const inputs = document.querySelectorAll('.inputs-container');
 
+//reset form to empty
+const resetForm = () => ([title.value, author.value, total.value, completed.value] = ['asd', 'asd', 123, 12]);
+
+// toggle form display
+const toggleFormCtn = () => (formCtn.classList.contains('none') ? formCtn.classList.remove('none') : formCtn.classList.add('none'));
+
 //show form when plus button is clicked
-plusBtn.onclick = () => formCtn.classList.remove('none');
+plusBtn.addEventListener('click', (e) => toggleFormCtn());
 
 //hide form and reset all form values when we clicked on cancel button
-cancelBtn.onclick = () => {
-  formCtn.classList.add('none');
+cancelBtn.addEventListener('click', (e) => {
+  // form.reset();
   resetForm();
-};
+  toggleFormCtn();
+});
 
 //make completed pages equal to total pages when click have read button
-haveReadBtn.onclick = (e) => (completed.value = total.value);
+haveReadBtn.addEventListener('click', (e) => (completed.value = total.value));
 
 // submit with button
-addBtn.onclick = (e) => form.submit();
+addBtn.addEventListener('click', (e) => form.submit());
 
 // control number inputs
 const ignoreDigits = (e) => {
@@ -159,7 +175,7 @@ const ignoreDigits = (e) => {
     return;
   }
   // ignore when value > 1000000
-  if (+e.target.value > 10e5) {
+  if (+e.target.value >= 10e5) {
     e.target.value = 10e5;
     e.preventDefault();
     return;
@@ -170,18 +186,14 @@ total.addEventListener('keydown', ignoreDigits);
 completed.addEventListener('keydown', ignoreDigits);
 
 form.addEventListener('submit', (e) => {
-  console.log(e);
   const book = Book(title.value, author.value, total.value, completed.value);
-  console.log(book);
+
   data.push(book);
-  // Book.set('books', data);
+
   display.books(data);
+
+  toggleFormCtn();
+
+  // form.reset();
+  resetForm();
 });
-
-//reset form to empty
-function resetForm() {
-  [title.value, author.value, total.value, completed.value] = ['', '', '', ''];
-}
-
-//
-window.addEventListener('DOMContentLoaded', (e) => {});
