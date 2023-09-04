@@ -1,4 +1,4 @@
-# booksLibrary
+# The books Library The Odin Project
 
 The Odin Project - JavaScript state books library project
 
@@ -16,10 +16,10 @@ button.addEventListener('click', (e) => {
 
 - we can call onclick like a function to trigger a specific element event ex: formCtn.onclick()
 
-- we can ignore the key we don't want user to type in our inputs with input.onkeydown=e=>{if(e.key==Enter){e.preventDefault(); return ;}}
+- we can ignore the key we don't want user to type in our inputs with `input.onkeydown=e=>{if(e.key==Enter){e.preventDefault(); return ;}}`
 
 - Form validation with HTML and javaScript
 
-[View all my projects Live demo links](https://minhhoccode111.github.io/allProjectssLiveDemo/)
+[View all projects' live demos](https://minhhoccode111.github.io/all-projects-live-demos/) 
 
-[View this project Live demo](https://minhhoccode111.github.io/theBooksLibraryTOP/)
+[The Books Library TOP](https://minhhoccode111.github.io/the-books-library-top/)
