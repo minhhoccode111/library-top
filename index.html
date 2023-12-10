@@ -1,48 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Books Library</title>
-    <link rel="stylesheet" href="./books.css" />
-    <link rel="stylesheet" href="./style.css" />
-    <script src="./script.js" defer></script>
-    <!-- <script src="./books.js" defer></script> -->
+    <title>Vite + React + TS</title>
   </head>
   <body>
-    <div class="wrapper">
-      <header class="header">BOOKS LIBRARY</header>
-      <div class="form-container none">
-        <div class="form-wrapper">
-          <h2>Add new book</h2>
-          <form action="#">
-            <div class="inputs-container">
-              <input type="text" class="title" value="" placeholder="Title" required maxlength="100" />
-              <input type="text" class="author" value="" placeholder="Author" required maxlength="100" />
-              <input type="number" class="total-pages" value="" placeholder="Total pages" required min="1" />
-              <div class="did-you-read">Did you read it ?</div>
-              <input type="number" class="completed-pages" value="" placeholder="Completed pages" min="1" required />
-              <button type="button" class="switch">Yes, I've read it.</button>
-              <button type="button" class="cancel">Cancel</button>
-              <button type="submit" class="add">Add</button>
-              <span class="warn none">Please fill every inputs!</span>
-            </div>
-          </form>
-        </div>
-      </div>
-      <button type="button" class="plus-button">+</button>
-    </div>
-    <div class="edit-popup-container none">
-      <form action="#" class="edit-popup">
-        <h2 class="new-h2">Feel free to leave any input field empty if you don't want to change its contents.</h2>
-        <input type="text" class="new-title" placeholder="Edit Title" required maxlength="100" />
-        <input type="text" class="new-author" placeholder="Edit Author" required maxlength="100" />
-
-        <input type="number" class="new-completed-pages" placeholder="Edit completed pages" required min="0" />
-        <button type="submit" class="new-confirm">Confirm</button>
-      </form>
-    </div>
-    <div class="library"></div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

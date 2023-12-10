@@ -1,25 +1,30 @@
-# The books Library The Odin Project
+# React + TypeScript + Vite
 
-The Odin Project - JavaScript state books library project
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-What I've learn :
--import and export functions from another js files
+Currently, two official plugins are available:
 
-- select parentNode of a button when that button had a click event with:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-```javascript
-button.addEventListener('click', (e) => {
-  console.log(e.currentTarget.parentNode);
-  //show its parent
-});
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
 ```
 
-- we can call onclick like a function to trigger a specific element event ex: formCtn.onclick()
-
-- we can ignore the key we don't want user to type in our inputs with `input.onkeydown=e=>{if(e.key==Enter){e.preventDefault(); return ;}}`
-
-- Form validation with HTML and javaScript
-
-[View all projects' live demos](https://minhhoccode111.github.io/all-projects-live-demos/) 
-
-[The Books Library TOP](https://minhhoccode111.github.io/the-books-library-top/)
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
