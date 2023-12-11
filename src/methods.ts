@@ -51,8 +51,19 @@ export async function updateData(id, updates) {
   return database;
 }
 
+export async function deleteData(id) {
+  await fakeNetwork();
+  const database = await getData();
+  const index = database.findIndex((book) => book.id === id);
+  if (index > -1) {
+    database.splice(index, 1);
+    return true;
+  }
+  return false;
+}
+
 async function fakeNetwork() {
   return new Promise((res) => {
-    setTimeout(res, 0);
+    setTimeout(res, 200);
   });
 }

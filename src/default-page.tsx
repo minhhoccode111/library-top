@@ -33,6 +33,22 @@ const DefaultPage = () => {
               <FinishedPagesAndRatingComponents book={book} />
             </div>
             <p>Id: {book.id}</p>
+            <Form method="post" action="/destroy">
+              <input
+                type="text"
+                readOnly
+                hidden
+                aria-hidden
+                name="id"
+                value={book.id}
+              />
+              <button
+                type="submit"
+                className="text-red-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+              >
+                Delete
+              </button>
+            </Form>
           </li>
         );
       })}
