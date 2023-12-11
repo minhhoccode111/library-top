@@ -6,8 +6,9 @@ import DefaultPage, {
   loader as defaultLoader,
   action as defaultAction,
 } from "./default-page";
-import Edit from "./edit";
+import Edit, { action as editAction, loader as editLoader } from "./edit";
 import { action as deleteAction } from "./delete";
+import { action as editSubmitAction } from "./edit-submit";
 
 const Router: React.FC = () => {
   const router = createBrowserRouter([
@@ -28,8 +29,14 @@ const Router: React.FC = () => {
           element: <Add />,
         },
         {
-          path: "edit",
+          path: "edit/:bookId",
           element: <Edit />,
+          loader: editLoader,
+          action: editAction,
+        },
+        {
+          path: "edit/:bookId/submit",
+          action: editSubmitAction,
         },
         {
           path: "destroy",

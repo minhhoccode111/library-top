@@ -2,6 +2,7 @@ import { Outlet, NavLink, Link } from "react-router-dom";
 import { addData } from "./methods";
 
 export const action = async ({ request }) => {
+  console.log("action root");
   const data = await request.formData();
   console.log(data);
   const book = Object.fromEntries(data);
@@ -13,14 +14,14 @@ export const action = async ({ request }) => {
 const Root: React.FC = () => {
   return (
     <>
-      <header className="bg-slate-100 p-4 flex items-center justify-between text-amber-950">
+      <header className="bg-slate-100 p-4 flex items-center justify-between text-amber-950 rounded-b-3xl mx-auto max-w-lg">
         <Link to={"/"}>
           <h1 className="text-4xl">Library</h1>
         </Link>
         <nav className="flex gap-4 items-center justify-between">
           <NavLink
             className={({ isActive }) =>
-              isActive ? "bg-slate-200 rounded-t-md px-2 py-1" : ""
+              isActive ? "bg-slate-200 rounded-b-md px-2 py-1" : ""
             }
             to={"/"}
           >
@@ -28,7 +29,7 @@ const Root: React.FC = () => {
           </NavLink>
           <NavLink
             className={({ isActive }) =>
-              isActive ? "bg-slate-200 rounded-t-md px-2 py-1" : ""
+              isActive ? "bg-slate-200 rounded-b-md px-2 py-1" : ""
             }
             to={"add"}
           >

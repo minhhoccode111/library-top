@@ -35,6 +35,12 @@ export async function getData() {
   return database;
 }
 
+export async function getBook(id) {
+  const database = await getData();
+  const book = database.find((book) => book.id === id);
+  return book;
+}
+
 export async function addData(obj) {
   await fakeNetwork();
   const database = await getData();

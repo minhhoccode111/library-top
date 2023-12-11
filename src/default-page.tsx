@@ -2,11 +2,13 @@ import { useLoaderData, Form, useFetcher, useSubmit } from "react-router-dom";
 import { getData, updateData } from "./methods";
 
 export const loader = async () => {
+  console.log("loader default page");
   const database = await getData();
   return { database };
 };
 
 export const action = async ({ request }) => {
+  console.log("action default page");
   const data = await request.formData();
   const obj = Object.fromEntries(data);
   obj.finishedPages = Number(obj.finishedPages);
@@ -33,22 +35,40 @@ const DefaultPage = () => {
               <FinishedPagesAndRatingComponents book={book} />
             </div>
             <p>Id: {book.id}</p>
-            <Form method="post" action="/destroy">
-              <input
-                type="text"
-                readOnly
-                hidden
-                aria-hidden
-                name="id"
-                value={book.id}
-              />
-              <button
-                type="submit"
-                className="text-red-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
-              >
-                Delete
-              </button>
-            </Form>
+            <div className="flex items-center justify-between gap-4">
+              <Form method="post" action="/destroy">
+                <input
+                  type="text"
+                  readOnly
+                  hidden
+                  aria-hidden
+                  name="id"
+                  value={book.id}
+                />
+                <button
+                  type="submit"
+                  className="text-red-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+                >
+                  Delete
+                </button>
+              </Form>
+              <Form method="post" action={`/edit/${book.id}`}>
+                <input
+                  type="text"
+                  readOnly
+                  hidden
+                  aria-hidden
+                  name="id"
+                  value={book.id}
+                />
+                <button
+                  type="submit"
+                  className="text-yellow-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+                >
+                  Edit
+                </button>
+              </Form>
+            </div>
           </li>
         );
       })}
