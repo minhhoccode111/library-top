@@ -5,6 +5,7 @@ const database = [
     title: "The book of five rings",
     author: "Miyamoto Musashi",
     pages: 105,
+    finishedPages: 105,
     isDone: true,
     rating: 4,
     id: uuid().slice(0, 8),
@@ -13,6 +14,7 @@ const database = [
     title: "Think like a Programmer",
     author: "Spraul, V.Anton",
     pages: 332,
+    finishedPages: 105,
     isDone: false,
     rating: 4,
     id: uuid().slice(0, 8),
@@ -21,6 +23,7 @@ const database = [
     title: "Elon Musk: Tesla, SpaceX, and the Quest for a Fantastic Future",
     author: "Ashlee Vance",
     pages: 458,
+    finishedPages: 0,
     isDone: false,
     rating: 5,
     id: uuid().slice(0, 8),
@@ -50,6 +53,6 @@ export async function updateData(id, updates) {
 
 async function fakeNetwork() {
   return new Promise((res) => {
-    setTimeout(res, 500);
+    setTimeout(res, 0);
   });
 }

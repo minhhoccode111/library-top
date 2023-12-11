@@ -5,7 +5,8 @@ export const action = async ({ request }) => {
   const data = await request.formData();
   console.log(data);
   const book = Object.fromEntries(data);
-  book.isDone = !!book.isDone;
+  book.isDone = false;
+  book.finishedPages = 0;
   return addData(book);
 };
 

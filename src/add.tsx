@@ -44,16 +44,6 @@ const Add = () => {
         </div>
         <div>
           <label className="flex items-center justify-between gap-4">
-            Is done:{" "}
-            <input
-              type="checkbox"
-              className="border rounded max-w-[200px] float-right focus:outline-none shadow-sm focus:shadow-amber-950 pl-2 py-1"
-              name="isDone"
-            />
-          </label>
-        </div>
-        <div>
-          <label className="flex items-center justify-between gap-4">
             Rating:{" "}
             <input
               required
