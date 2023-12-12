@@ -1,19 +1,19 @@
-import { Form, useLoaderData } from "react-router-dom";
+import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import { getBook } from "./methods";
 
 export const loader = async ({ params }) => {
   const id = params.bookId;
   const book = await getBook(id);
-  console.log("loader edit");
   return book;
 };
 
 const Edit = () => {
   const book = useLoaderData();
+  const navigate = useNavigate();
   return (
     <>
-      <h1 className="p-4 text-4xl text-amber-950 text-center">
-        Edit book with id: {book.id}
+      <h1 className="p-4 text-2xl text-amber-950 text-center">
+        Edit book with title: {book.title}
       </h1>
       <div className="max-w-[400px] mx-auto p-8 text-amber-950 shadow-md shadow-amber-950 m-4">
         <Form
@@ -23,7 +23,7 @@ const Edit = () => {
         >
           <div>
             <label className="flex items-center justify-between gap-4">
-              Title:{" "}
+              *Title:{" "}
               <input
                 required
                 type="text"
@@ -36,7 +36,7 @@ const Edit = () => {
           </div>
           <div>
             <label className="flex items-center justify-between gap-4">
-              Author:{" "}
+              *Author:{" "}
               <input
                 required
                 type="text"
@@ -49,7 +49,7 @@ const Edit = () => {
           </div>
           <div>
             <label className="flex items-center justify-between gap-4">
-              Pages:{" "}
+              *Pages:{" "}
               <input
                 required
                 type="number"
@@ -64,7 +64,7 @@ const Edit = () => {
           </div>
           <div>
             <label className="flex items-center justify-between gap-4">
-              Rating:{" "}
+              *Rating:{" "}
               <input
                 required
                 name="rating"
@@ -85,8 +85,18 @@ const Edit = () => {
             name="id"
             value={book.id}
           />
-          <button className="block w-full border p-4" type="submit">
+          <button
+            className="block w-full border p-4 hover:bg-green-100 focus:bg-green-100 active:bg-green-950 active:text-white"
+            type="submit"
+          >
             Submit
+          </button>
+          <button
+            className="block text-red-500 w-full border p-4 hover:bg-red-100 focus:bg-red-100 active:bg-red-950 active:text-white"
+            onClick={() => navigate(-1)}
+            type="button"
+          >
+            Cancel
           </button>
         </Form>
       </div>

@@ -2,9 +2,7 @@ import { Outlet, NavLink, Link } from "react-router-dom";
 import { addData } from "./methods";
 
 export const action = async ({ request }) => {
-  console.log("action root");
   const data = await request.formData();
-  console.log(data);
   const book = Object.fromEntries(data);
   book.isDone = false;
   book.finishedPages = 0;
@@ -18,34 +16,44 @@ const Root: React.FC = () => {
         <Link to={"/"}>
           <h1 className="text-4xl">Library</h1>
         </Link>
-        <nav className="flex gap-4 items-center justify-between">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "bg-slate-200 rounded-b-md px-2 py-1" : ""
-            }
-            to={"/"}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "bg-slate-200 rounded-b-md px-2 py-1" : ""
-            }
-            to={"add"}
-          >
-            Add
-          </NavLink>
+        <nav className="flex gap-4 items-center justify-between font-bold">
+          <div className="underline decoration-dotted decoration-amber-950">
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "bg-slate-200 rounded-b-md px-2 py-1 decoration-solid"
+                  : ""
+              }
+              to={"/"}
+            >
+              Home
+            </NavLink>
+          </div>
+          <div className="underline decoration-dotted decoration-amber-950">
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "bg-slate-200 rounded-b-md px-2 py-1 decoration-solid"
+                  : ""
+              }
+              to={"add"}
+            >
+              Add
+            </NavLink>
+          </div>
         </nav>
       </header>
-      <main>
+      <main className="grid place-items-center">
         <Outlet />
       </main>
-      <footer className="fixed bottom-0 left-0 right-0 flex items-center justify-center p-4 bg-slate-100 text-amber-950">
-        <p>
+      <footer className="fixed bottom-0 left-0 right-0 flex items-center justify-center p-4 bg-slate-100 text-amber-950 max-w-lg mx-auto rounded-t-3xl">
+        <p className="font-bold">
           Make with love by{" "}
           <a
-            className="underline decoration-dotted hover:decoration-double"
+            className="underline decoration-dotted hover:decoration-solid"
             href="https://github.com/minhhoccode111"
+            target="_blank"
+            rel="noreferrer"
           >
             minhhoccode111
           </a>

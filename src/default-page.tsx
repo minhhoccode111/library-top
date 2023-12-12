@@ -8,13 +8,11 @@ import {
 import { getData, updateData } from "./methods";
 
 export const loader = async () => {
-  console.log("loader default page");
   const database = await getData();
   return { database };
 };
 
 export const action = async ({ request }) => {
-  console.log("action default page");
   const data = await request.formData();
   const obj = Object.fromEntries(data);
   obj.finishedPages = Number(obj.finishedPages);
@@ -33,16 +31,26 @@ const DefaultPage = () => {
             key={book.id}
             className="border rounded p-4 w-72 whitespace-nowrap"
           >
-            <p className="text-xl py-4 text-slate-900 overflow-x-auto">
+            <h2 className="text-xl font-bold py-4 text-slate-900 overflow-x-auto">
               {book.title}
-            </p>
-            <div className="text-right">
-              <p className="overflow-x-auto">{book.author}</p>
+            </h2>
+            <div className="text-right text-slate-500">
+              <p className="overflow-x-auto text-lg">{book.author}</p>
               <FinishedPagesAndRatingComponents book={book} />
             </div>
-            <p>Id: {book.id}</p>
+            <p className="text-xs text-slate-200">Id: {book.id}</p>
             <div className="flex items-center justify-between gap-4">
-              <Form method="post" action="/destroy">
+              <Form
+                method="post"
+                action="/destroy"
+                onSubmit={(e) => {
+                  if (
+                    !confirm(`Are you sure you want to delete ${book.title}?`)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+              >
                 <input
                   type="text"
                   readOnly
@@ -53,14 +61,14 @@ const DefaultPage = () => {
                 />
                 <button
                   type="submit"
-                  className="text-red-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+                  className="text-red-500  border px-2 py-1 rounded hover:bg-red-500 hover:text-slate-200 transition-colors"
                 >
                   Delete
                 </button>
               </Form>
               <Link
                 to={`/edit/${book.id}`}
-                className="text-yellow-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+                className="text-yellow-500 border px-2 py-1 rounded hover:bg-yellow-500 hover:text-slate-200 transition-colors"
               >
                 Edit
               </Link>

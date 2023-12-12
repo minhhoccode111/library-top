@@ -29,6 +29,24 @@ const defaultDatabase = [
     rating: 5,
     id: uuid().slice(0, 8),
   },
+  {
+    title: "Deep Work",
+    author: "Cal Newport",
+    pages: 239,
+    finishedPages: 50,
+    isDone: false,
+    rating: 5,
+    id: uuid().slice(0, 8),
+  },
+  {
+    title: "Algorithms (fourth edition)",
+    author: "Robert Sedgewick, Kevin Wayne",
+    pages: 990,
+    finishedPages: 100,
+    isDone: false,
+    rating: 4,
+    id: uuid().slice(0, 8),
+  },
 ];
 
 const set = (database) => {
@@ -40,7 +58,6 @@ export const getData = () => {
     localStorage.getItem("books") === null
       ? defaultDatabase
       : JSON.parse(localStorage.getItem("books"));
-  console.log(database);
   return database;
 };
 

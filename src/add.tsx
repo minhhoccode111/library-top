@@ -1,6 +1,7 @@
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 const Add = () => {
+  const navigate = useNavigate();
   return (
     <>
       <h1 className="p-4 text-4xl text-amber-950 text-center">
@@ -10,7 +11,7 @@ const Add = () => {
         <Form method="post" action="/" className="flex flex-col gap-4">
           <div>
             <label className="flex items-center justify-between gap-4">
-              Title:{" "}
+              *Title:{" "}
               <input
                 required
                 type="text"
@@ -22,7 +23,7 @@ const Add = () => {
           </div>
           <div>
             <label className="flex items-center justify-between gap-4">
-              Author:{" "}
+              *Author:{" "}
               <input
                 required
                 type="text"
@@ -34,7 +35,7 @@ const Add = () => {
           </div>
           <div>
             <label className="flex items-center justify-between gap-4">
-              Pages:{" "}
+              *Pages:{" "}
               <input
                 required
                 type="number"
@@ -48,7 +49,7 @@ const Add = () => {
           </div>
           <div>
             <label className="flex items-center justify-between gap-4">
-              Rating:{" "}
+              *Rating:{" "}
               <input
                 required
                 name="rating"
@@ -60,8 +61,18 @@ const Add = () => {
               />
             </label>
           </div>
-          <button className="block w-full border p-4" type="submit">
+          <button
+            className="block text-green-500 w-full border p-4 hover:bg-green-100 focus:bg-green-100 active:bg-green-950 active:text-white"
+            type="submit"
+          >
             Submit
+          </button>
+          <button
+            className="block text-red-500 w-full border p-4 hover:bg-red-100 focus:bg-red-100 active:bg-red-950 active:text-white"
+            onClick={() => navigate(-1)}
+            type="button"
+          >
+            Cancel
           </button>
         </Form>
       </div>
