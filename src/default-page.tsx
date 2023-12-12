@@ -1,4 +1,10 @@
-import { useLoaderData, Form, useFetcher, useSubmit } from "react-router-dom";
+import {
+  useLoaderData,
+  Form,
+  useFetcher,
+  useSubmit,
+  Link,
+} from "react-router-dom";
 import { getData, updateData } from "./methods";
 
 export const loader = async () => {
@@ -52,22 +58,12 @@ const DefaultPage = () => {
                   Delete
                 </button>
               </Form>
-              <Form method="post" action={`/edit/${book.id}`}>
-                <input
-                  type="text"
-                  readOnly
-                  hidden
-                  aria-hidden
-                  name="id"
-                  value={book.id}
-                />
-                <button
-                  type="submit"
-                  className="text-yellow-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
-                >
-                  Edit
-                </button>
-              </Form>
+              <Link
+                to={`/edit/${book.id}`}
+                className="text-yellow-500 border px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+              >
+                Edit
+              </Link>
             </div>
           </li>
         );

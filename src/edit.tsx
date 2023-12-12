@@ -1,16 +1,11 @@
-import { Form, useLoaderData, redirect } from "react-router-dom";
-import { updateData, getBook } from "./methods";
+import { Form, useLoaderData } from "react-router-dom";
+import { getBook } from "./methods";
 
 export const loader = async ({ params }) => {
   const id = params.bookId;
   const book = await getBook(id);
   console.log("loader edit");
   return book;
-};
-
-export const action = async ({ request }) => {
-  console.log("action edit");
-  return {};
 };
 
 const Edit = () => {
