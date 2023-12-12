@@ -13,17 +13,13 @@ type Book = {
   rating: number;
 };
 
-export const loader = async ({
-  params: { bookId },
-}: {
-  params: Params;
-}): Promise<Book[]> => {
+export const loader = async ({ params: { bookId } }) => {
   const book = await getBook(bookId);
-  return book;
+  return { book };
 };
 
 const Edit = () => {
-  const book = useLoaderData() as Book;
+  const { book } = useLoaderData() as { book: Book };
   const navigate = useNavigate();
   return (
     <>
