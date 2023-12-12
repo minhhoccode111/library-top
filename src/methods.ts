@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
+// import localforage from "localforage";
 
-const database = [
+const defaultDatabase = [
   {
     title: "The book of five rings",
     author: "Miyamoto Musashi",
@@ -30,46 +31,48 @@ const database = [
   },
 ];
 
-export async function getData() {
-  await fakeNetwork();
-  return database;
-}
+const set = (database) => {
+  localStorage.setItem("books", JSON.stringify(database));
+};
 
-export async function getBook(id) {
-  const database = await getData();
+export const getData = () => {
+  const database =
+    localStorage.getItem("books") === null
+      ? defaultDatabase
+      : JSON.parse(localStorage.getItem("books"));
+  console.log(database);
+  return database;
+};
+
+export const getBook = (id) => {
+  const database = getData();
   const book = database.find((book) => book.id === id);
   return book;
-}
+};
 
-export async function addData(obj) {
-  await fakeNetwork();
-  const database = await getData();
-  database.push(Object.assign(obj, { id: uuid().slice(0, 8) }));
+export const addData = (book) => {
+  const database = getData();
+  database.push(Object.assign(book, { id: uuid().slice(0, 8) }));
+  set(database);
   return database;
-}
+};
 
-export async function updateData(id, updates) {
-  await fakeNetwork();
-  const database = await getData();
+export const updateData = (id, updates) => {
+  const database = getData();
   const book = database.find((book) => book.id === id);
   if (!book) throw new Error(`That book doesn't exist`);
   Object.assign(book, updates);
+  set(database);
   return database;
-}
+};
 
-export async function deleteData(id) {
-  await fakeNetwork();
-  const database = await getData();
+export const deleteData = (id) => {
+  const database = getData();
   const index = database.findIndex((book) => book.id === id);
   if (index > -1) {
     database.splice(index, 1);
+    set(database);
     return true;
   }
   return false;
-}
-
-async function fakeNetwork() {
-  return new Promise((res) => {
-    setTimeout(res, 200);
-  });
-}
+};
