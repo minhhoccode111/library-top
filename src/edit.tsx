@@ -1,14 +1,29 @@
 import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import { getBook } from "./methods";
 
-export const loader = async ({ params }) => {
-  const id = params.bookId;
-  const book = await getBook(id);
+type Params = {
+  bookId: string;
+};
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  pages: number;
+  finishedPages: number;
+  rating: number;
+};
+
+export const loader = async ({
+  params: { bookId },
+}: {
+  params: Params;
+}): Promise<Book[]> => {
+  const book = await getBook(bookId);
   return book;
 };
 
 const Edit = () => {
-  const book = useLoaderData();
+  const book = useLoaderData() as Book;
   const navigate = useNavigate();
   return (
     <>

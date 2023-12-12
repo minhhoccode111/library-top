@@ -1,9 +1,13 @@
 import { Outlet, NavLink, Link } from "react-router-dom";
 import { addData } from "./methods";
 
-export const action = async ({ request }) => {
+type Request = {
+  formData: () => unknown;
+};
+
+export const action = async ({ request }: { request: Request }) => {
   const data = await request.formData();
-  const book = Object.fromEntries(data);
+  const book = Object.fromEntries(data as Iterable<readonly [PropertyKey]>);
   book.isDone = false;
   book.finishedPages = 0;
   return addData(book);

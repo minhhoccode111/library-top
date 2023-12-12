@@ -1,5 +1,4 @@
 import { v4 as uuid } from "uuid";
-// import localforage from "localforage";
 
 const defaultDatabase = [
   {
@@ -49,43 +48,48 @@ const defaultDatabase = [
   },
 ];
 
-const set = (database) => {
+const set = (database: Array<object>) => {
   localStorage.setItem("books", JSON.stringify(database));
 };
 
 export const getData = () => {
-  const database =
-    localStorage.getItem("books") === null
-      ? defaultDatabase
-      : JSON.parse(localStorage.getItem("books"));
-  return database;
+  const database = localStorage.getItem("books");
+  if (database === null) {
+    return defaultDatabase;
+  } else {
+    return JSON.parse(database);
+  }
 };
 
-export const getBook = (id) => {
+type Book = {
+  id: string;
+};
+
+export const getBook = (id: string) => {
   const database = getData();
-  const book = database.find((book) => book.id === id);
+  const book = database.find((book: Book) => book.id === id);
   return book;
 };
 
-export const addData = (book) => {
+export const addData = (book: Book) => {
   const database = getData();
   database.push(Object.assign(book, { id: uuid().slice(0, 8) }));
   set(database);
   return database;
 };
 
-export const updateData = (id, updates) => {
+export const updateData = (id: keyof Book, updates: object) => {
   const database = getData();
-  const book = database.find((book) => book.id === id);
+  const book = database.find((book: Book) => book.id === id);
   if (!book) throw new Error(`That book doesn't exist`);
   Object.assign(book, updates);
   set(database);
   return database;
 };
 
-export const deleteData = (id) => {
+export const deleteData = (id: keyof Book) => {
   const database = getData();
-  const index = database.findIndex((book) => book.id === id);
+  const index = database.findIndex((book: Book) => book.id === id);
   if (index > -1) {
     database.splice(index, 1);
     set(database);

@@ -6,22 +6,39 @@ import {
   Link,
 } from "react-router-dom";
 import { getData, updateData } from "./methods";
+import PropTypes from "prop-types";
+
+type Request = {
+  formData: () => unknown;
+};
 
 export const loader = async () => {
   const database = await getData();
   return { database };
 };
 
-export const action = async ({ request }) => {
+export const action = async ({ request }: { request: Request }) => {
   const data = await request.formData();
-  const obj = Object.fromEntries(data);
+  const obj = Object.fromEntries(data as Iterable<readonly [PropertyKey]>);
   obj.finishedPages = Number(obj.finishedPages);
   obj.rating = Number(obj.rating);
   return updateData(obj.id, obj);
 };
 
-const DefaultPage = () => {
-  const { database } = useLoaderData();
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  pages: number;
+  finishedPages: number;
+  rating: number;
+};
+type LoaderData = {
+  database: Book[];
+};
+
+const DefaultPage: React.FC = () => {
+  const { database } = useLoaderData() as LoaderData;
 
   return (
     <ul className="flex items-center gap-4 flex-wrap p-4">
@@ -80,14 +97,14 @@ const DefaultPage = () => {
   );
 };
 
-function FinishedPagesAndRatingComponents({ book }) {
+function FinishedPagesAndRatingComponents({ book }: { book: Book }) {
   const submit = useSubmit();
   const fetcher = useFetcher();
   let finishedPages = book.finishedPages;
   let rating = book.rating;
   if (fetcher.formData) {
-    finishedPages = fetcher.formData.get("finishedPages");
-    rating = fetcher.formData.get("rating");
+    finishedPages = Number(fetcher.formData.get("finishedPages"));
+    rating = Number(fetcher.formData.get("rating"));
   }
 
   return (
@@ -144,5 +161,9 @@ function FinishedPagesAndRatingComponents({ book }) {
     </fetcher.Form>
   );
 }
+
+FinishedPagesAndRatingComponents.propTypes = {
+  book: PropTypes.object.isRequired,
+};
 
 export default DefaultPage;
